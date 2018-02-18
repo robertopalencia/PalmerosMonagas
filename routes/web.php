@@ -49,6 +49,7 @@ Route::post('/agregargandola','GandolaController@agregargandola');
 Route::get('/editargandola/{id}', 'GandolaController@viewupdate');
 Route::delete('/tablagandola/{id}','GandolaController@delete');
 Route::put('/tablagandolas/{id}','GandolaController@update');
+Route::put('/editargandolas/{id}','PesajeController@updatecarga');
 
 
 //***********************USUARIO**********************************
@@ -79,7 +80,7 @@ Route::get('/cupos', 'CuposController@tablacupos');
 //***********************PESAJE**********************************
 Route::get('pagregar','PesajeController@vistaagregar');
 Route::post('pdf','PesajeController@pdfrecibo');
-Route::post('/agregarcarga', 'PesajeController@agregarcarga');
+Route::post('agregarcarga', 'PesajeController@agregarcarga');
 Route::post('pdfcarga','PesajeController@pdfcarga');
 
 //**********************DOCUMENTOS*******************************

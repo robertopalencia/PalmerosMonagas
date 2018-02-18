@@ -8,6 +8,8 @@ use Palma\Camion;
 use Palma\Productor;
 use Palma\Precio;
 use Palma\Pesaje;
+use Palma\Gandola;
+use Palma\Cargagandola;
 use Barryvdh\DomPDF\Facade as PDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -17,7 +19,30 @@ class PesajeController extends Controller
     
     public function vistaagregar()
     {
-        return view ('pagregar');    
+        $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
+        $cargagandola=DB::select($sqlcargagandola);
+        $idgandola=0;
+        foreach($cargagandola as $cargas)
+        {
+            $idcarga=$cargas->id;
+            $idgandola=$cargas->id_gandola;
+            $pesoneto=$cargas->peso_neto;
+        }
+        $sqlgandola = "SELECT * FROM gandola WHERE id='".$idgandola."'"; 
+        $gandola=DB::select($sqlgandola);
+         foreach($gandola as $gandolas)
+        {
+            $placa=$gandolas->placa;
+            $gandolapeso=$gandolas->peso;
+        }
+        if(count($cargagandola)>0)
+        {
+         return view ('pagregar', ['idgandola'=>'1', 'idcarga'=>$idcarga, 'placagandola'=>$placa, 'pesoneto'=>$pesoneto, 'gandolapeso'=>$gandolapeso]); 
+        }
+        else
+        {
+         return view ('pagregar', ['idgandola'=>'0']);    
+        }
     }
     
     public function agregarcarga (Request $request)
@@ -37,6 +62,7 @@ class PesajeController extends Controller
                      ->withErrors($validator);
                 }
                 $camion = Camion::all();
+                $gandola = Gandola::all();
                 $productor = Productor::all();
                 $precio = Precio::all();
                 foreach ($precio as $precios){
@@ -66,26 +92,97 @@ class PesajeController extends Controller
                     }
                     
                 }
+                $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
+                $cargagandola=DB::select($sqlcargagandola);
+       
+        foreach ($cargagandola as $cargagandolas) {
+       $idcarga=$cargagandolas->id;
+       $idgandolacarga=$cargagandolas->id_gandola;
+       $pesoneto=$cargagandolas->peso_neto;
+       }
+                $idgandola=0;
+                $gandolapeso=0;
+                $placagandola=0;
+        
+                foreach ($gandola as $gandolas) {
+                     
+                    if ($request->gandola==$gandolas->placa)
+                    {
+                        $idgandola=$gandolas->id;
+                        $gandolapeso=$gandolas->peso;
+                        $placagandola=$gandolas->placa;
+                    } 
+                    else
+                    {
+                    if($idgandolacarga==$gandolas->id)
+                    {
+                       $idgandola=$gandolas->id;
+                        $gandolapeso=$gandolas->peso;
+                        $placagandola=$gandolas->placa; 
+                    }
+                    }
+                }
+        
            if ($idproductor!=0&&$idcamion!=0)
            {
+               if ($idgandola!=0)
+               {
             $carga=new Pesaje;
-            $carga->carga = $request ->carga;
-            $carga->descripcion = $request ->descripcion;
+            $carga->carga = $request->carga;
+            $carga->descripcion = $request->descripcion;
             $carga->peso=$pesocamion;
             $carga->pago="NO";
             $carga->camion_id = $idcamion;
             $carga->productor_id = $idproductor;
             $carga->precio_id = $precios2;
+               
+                if(count($cargagandola)>0)
+                {
+                $suma=0;
+                $pesaje=$request->carga-$pesocamion;
+                $suma=$pesaje+$pesoneto;
+                $gandola2=Cargagandola::findOrFail($idcarga);
+                $gandola2->peso_neto = $suma;
+                $gandola2->save();
+                $carbon = new \Carbon\Carbon();
+                $fecha = $carbon->now();
+                $fecha=$fecha->format('Y-m-d');
+                $carga->fecha = $fecha; 
+             if($carga->save()){
+                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorcedula)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso);
+            }
+                }
             
+                else 
+                {
+                    $cargagandola=new Cargagandola;
+                    $pesaje=$request->carga-$pesocamion;
+                    $cargagandola->peso_neto = $pesaje;
+                    $cargagandola->id_gandola = $idgandola;
+                    $cargagandola->finale = "no";
+                    $cargagandola->save();
+                    $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
+                    $cargagandola=DB::select($sqlcargagandola);
+       
+        foreach ($cargagandola as $cargagandolas) {
+       $idcarga=$cargagandolas->id;
+       }
             
             $carbon = new \Carbon\Carbon();
             $fecha = $carbon->now();
             $fecha=$fecha->format('Y-m-d');
-            $carga->fecha = $fecha ; 
+            $carga->fecha = $fecha; 
              if($carga->save()){
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorcedula)->with('placa',$placa);
+                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorcedula)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
             }
+                }
+          
                }
+               else 
+               {
+                return back()->with('msj3', 'La Placa '.$placagandola.' de la gandola NO EXISTE'); 
+               }
+           }
                 else
                 {
                     if ($idproductor==0)
@@ -96,13 +193,29 @@ class PesajeController extends Controller
                          return back()->with('msj3', 'La Placa '.$request->placa.' del Vehiculo NO EXISTE y la Cedula de Identidad '.$request->cedula." NO EXISTE");
                         }
                         else
+                        { 
+                            if($idgandola==0)
                         {
-                             return back()->with('msj2', 'La Cedula de Identidad '.$request->cedula.' NO EXISTE');
+                           return back()->with('msj3', 'La Placa '.$placagandola.' de la gandola NO EXISTE'); 
+                        }
+                            else 
+                            {
+                               return back()->with('msj3', 'La Cedula de Identidad '.$request->cedula.' NO EXISTE'); 
+                            }
+                             
                         }
                     }
                     else 
                     {
-                         return back()->with('msj3', 'La Placa '.$request->placa.' del Vehiculo NO EXISTE');
+                         if($idgandola==0)
+                        {
+                           return back()->with('msj3', 'La Placa '.$placagandola.' de la gandola NO EXISTE'); 
+                        }
+                        else
+                        {
+                         return back()->with('msj3', 'La Placa '.$request->placa.' del Vehiculo NO EXISTE');    
+                        }
+                        
                         
                     }
                 }
@@ -160,4 +273,11 @@ class PesajeController extends Controller
     $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha]);
     return $pdf->download('Recibo Total '.$productornombre.' '.$fecha.'.pdf');
     }
+      public function updatecarga($id) 
+     {
+    $cargagandola=Cargagandola::findOrFail($id);
+    $cargagandola->finale = 'si';
+    $cargagandola->save();
+    return redirect('/pagregar');  
+     }
 }

@@ -44,7 +44,7 @@
 
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="peso" class="control-label">Peso del Vehiculo sin carga en KG</label>
+    <label for="peso" class="control-label">Capacidad de carga en KG</label>
     <input type="text" name="peso" class="form-control" required>
 </div>
 </div>
