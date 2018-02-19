@@ -162,4 +162,5 @@ class PdfController extends Controller
     return $pdf->download('Recibo '.$productornombre.' '.date_format($fecha2,'d-m-Y').'.pdf');
         
     }
+     
 }

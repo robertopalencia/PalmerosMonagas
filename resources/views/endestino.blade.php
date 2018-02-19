@@ -6,11 +6,10 @@
      <br>
      <br>
     <div class="panel panel-default">
-        <div class="panel-heading"><strong>Listado de Gandolas en Camino</strong></div>
+        <div class="panel-heading"><strong>Listado de Gandolas en Destino</strong></div>
     <div class="panel-body">
-     <button type="submit" class="btn btn-success btn" onclick="location.href='endestino'"><i class="fa fa-plus"></i>En destino</button>
-     <br>
-     <br>
+     <button type="submit" class="btn btn-success btn" onclick="location.href='gandolas'"><i class="fa fa-plus"></i>En Camino</button>
+    
       @if($gandola==0)
         <div class="col-xs-11">
 <div class="alert alert-danger" role="alert">No hay Gandolas en camino</div></div>
@@ -24,7 +23,6 @@
                 <th>Peso Destino</th>
                 <th>Peso Real</th>
                 <th>Fecha</th>
-                <th>Ubicación</th>
                 <th>Acciones</th>
             </thead>
             <tbody><?php $anterior=0;?>
@@ -38,7 +36,7 @@
                     <td class="table-text"><div> {{$gandola->peso_mermado}} </div></td>
                     <td class="table-text"><div> {{$gandola->peso_real}} </div></td>
                     <td class="table-text"><div> {{$gandola->fecha}} </div></td>
-                    <td class="table-text"><div> {{$gandola->ubicacion}} </div></td>
+                
                     
                        <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='pesos/{{$gandola->id}}'">
                         <i class=""></i> Pesos
@@ -46,7 +44,7 @@
                     <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='ubicacion/{{$gandola->cid}}'">
                         <i class=""></i> Ubicacion
                     </button></td>
-           
+                        
                   
                     
                   @endif    

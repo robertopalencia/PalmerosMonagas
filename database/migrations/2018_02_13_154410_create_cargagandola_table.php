@@ -18,6 +18,7 @@ class CreateCargagandolaTable extends Migration
             $table->timestamps();
             $table->integer('peso_neto');
             $table->integer('peso_mermado');
+            $table->integer('peso_real');   
             $table->string('finale');
             $table->integer('id_gandola')->unsigned()->nullable();
             $table->foreign('id_gandola')->references('id')->on('gandola')->onDelete('set null');

@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin</title>
+    <title>PALMEROS</title>
 
 
    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><strong>Administración RAUTEF</strong></a>
+                <a class="navbar-brand" href="/home"><strong>Administración ACEITECA-MONAGAS</strong></a>
                 
             </div>
            
@@ -66,7 +66,7 @@
             </ul>
 
             <div class="navbar-default sidebar" role="navigation">
-               <div align="center"><img src="{{ asset('img/RAUTEF.png') }}"></div>
+              
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
@@ -113,9 +113,7 @@
                         <li>
                             <a href="#"><i class="fa fa-folder fa-fw"></i> Documentos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/recibo"><i class='fa fa-print fa-fw'></i> Recibo</a>
-                                </li>
+                               
                                 <li>
                                     <a href="/informe"><i class='fa fa-print fa-fw'></i> Informe</a>
                                 </li>

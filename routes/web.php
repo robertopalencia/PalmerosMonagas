@@ -45,6 +45,8 @@ Route::get('/editarcamiones/{id}', 'VehiculoController@viewupdate');
 Route::get('tablagandolas','GandolaController@tabla');
 Route::get('agregargandola','GandolaController@vistaagregar');
 Route::post('/buscargandola','GandolaController@buscargandola');
+Route::post('/buscargandolacamino','GandolaController@buscargandolacamino');
+Route::post('/buscargandoladestino','GandolaController@buscargandoladestino');
 Route::post('/agregargandola','GandolaController@agregargandola');
 Route::get('/editargandola/{id}', 'GandolaController@viewupdate');
 Route::delete('/tablagandola/{id}','GandolaController@delete');
@@ -55,6 +57,7 @@ Route::get('/pesos/{id}', 'GandolaController@pesos');
 Route::put('/pesos/{id}', 'GandolaController@updatepesos');
 Route::get('/ubicacion/{id}', 'GandolaController@ubicacion');
 Route::put('/ubicacion/{id}', 'GandolaController@updateubicacion');
+Route::get('endestino', 'GandolaController@endestino');
 
 //***********************USUARIO**********************************
 Route::get('users','UsuarioController@listadousers');

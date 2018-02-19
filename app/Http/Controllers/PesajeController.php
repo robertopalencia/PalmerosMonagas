@@ -104,6 +104,7 @@ class PesajeController extends Controller
                 $idgandola=0;
                 $gandolapeso=0;
                 $placagandola=0;
+                $idgandolacarga=0;
         
                 foreach ($gandola as $gandolas) {
                      
@@ -113,16 +114,16 @@ class PesajeController extends Controller
                         $gandolapeso=$gandolas->peso;
                         $placagandola=$gandolas->placa;
                     } 
-                    else
-                    {
-                    if($idgandolacarga==$gandolas->id)
+                
+                }
+           foreach ($gandola as $gandolas) {
+         if($idgandolacarga==$gandolas->id)
                     {
                        $idgandola=$gandolas->id;
                         $gandolapeso=$gandolas->peso;
                         $placagandola=$gandolas->placa; 
                     }
-                    }
-                }
+           }
         
            if ($idproductor!=0&&$idcamion!=0)
            {
@@ -164,13 +165,16 @@ class PesajeController extends Controller
                     $cargagandola->save();
                     $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
                     $cargagandola=DB::select($sqlcargagandola);
-                    $control= new Control;
-                    $control->id_gandola = $idgandola;
-                    $control->ubicacion = 'Monagas';
-                    $control->save();
-        foreach ($cargagandola as $cargagandolas) {
+                      foreach ($cargagandola as $cargagandolas) {
        $idcarga=$cargagandolas->id;
        }
+                    
+                    
+                    $control= new Control;
+                    $control->id_cargagandola = $idcarga;
+                    $control->ubicacion = 'Monagas';
+                    $control->save();
+      
             
             $carbon = new \Carbon\Carbon();
             $fecha = $carbon->now();

@@ -3,33 +3,7 @@
 
 @section('content')
     <h1>Pesaje</h1> 
-       @if($idgandola>0)
-               @if(session()->has('idcarga'))
-             
-                <form action="{{url('editargandolas')}}/{{session('idcarga')}}" method="post"> 
-                    {{csrf_field()}} 
-                    {{method_field ('PUT')}} 
-                     <strong> {{session('pesoneto')}}/{{session('gandolapeso')}} Kg. Cargados en la Gandola Placas {{session('placagandola')}}</strong>
-                       <button type="submit" class="btn btn-danger btn"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS , SE BORRARAN TODOS SUS REGISTROS')">
-                        <i class="fa fa-stop"></i> FINALIZAR
-                    </button>
-                   
-                    </form>
-                   
-                @else
-                               <form action="{{url('editargandolas')}}/{{$idcarga}}" method="post"> 
-                    {{csrf_field()}} 
-                    {{method_field ('PUT')}} 
-                    <strong> {{$pesoneto}}/{{$gandolapeso}} Kg. Cargados en la Gandola Placas {{$placagandola}}</strong>
-                    <button type="submit" class="btn btn-danger btn"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS , SE BORRARAN TODOS SUS REGISTROS')">
-                        <i class="fa fa-stop"></i> FINALIZAR
-                    </button>
-                    
-                    </form>
-                   
-                @endif
-                
-        @endif
+     
 @include('common.errors')
 @if(session()->has('msj'))
     <div class="col-xs-11">
@@ -95,8 +69,12 @@
             </div>
         </div>
         @else
-         <input type="hidden" name="gandola" class="form-control" value="0">
-    @endif
+        @if(session()->has('placagandola'))
+        <input type="hidden" name="gandola" class="form-control" value="{{session('placagandola')}}">
+        @else
+         <input type="hidden" name="gandola" class="form-control" value="{{$placagandola}}">
+         @endif
+        @endif
         <div class="col-xs-5">
             <div class="form-group">
                 <br>
@@ -106,5 +84,34 @@
             </div>
         </div>
     {{ Form::close() }}
-     
+       @if($idgandola>0)
+         <div class="col-xs-5">
+            <div class="form-group">
+                       @if(session()->has('idcarga'))
+             
+                <form action="{{url('editargandolas')}}/{{session('idcarga')}}" method="post"> 
+                    {{csrf_field()}} 
+                    {{method_field ('PUT')}} 
+                     <strong> {{session('pesoneto')}}/{{session('gandolapeso')}} Kg. Cargados en la Gandola Placas {{session('placagandola')}}</strong>
+                       <button type="submit" class="btn btn-danger btn"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS , SE BORRARAN TODOS SUS REGISTROS')">
+                        <i class="fa fa-stop"></i> FINALIZAR
+                    </button>
+                   
+                    </form>
+                   
+                @else
+                               <form action="{{url('editargandolas')}}/{{$idcarga}}" method="post"> 
+                    {{csrf_field()}} 
+                    {{method_field ('PUT')}} 
+                    <strong> {{$pesoneto}}/{{$gandolapeso}} Kg. Cargados en la Gandola Placas {{$placagandola}}</strong>
+                    <button type="submit" class="btn btn-danger btn"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS , SE BORRARAN TODOS SUS REGISTROS')">
+                        <i class="fa fa-stop"></i> FINALIZAR
+                    </button>
+                    
+                    </form>
+                   
+                @endif
+                   </div>
+        </div>
+        @endif
 @stop
