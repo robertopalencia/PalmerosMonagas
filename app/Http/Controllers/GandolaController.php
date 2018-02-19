@@ -9,6 +9,8 @@ use Palma\Http\Requests;
 use Palma\Http\Controllers\Controller;
 use DB;
 use Palma\Gandola;
+use Palma\Cargagandola;
+use Palma\Control;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -33,6 +35,23 @@ class GandolaController extends Controller
     {
         return view ('agregargandola');    
     }
+    public function gandolas()
+    {
+         $sql = "SELECT chofer, placa, peso_neto, peso_mermado, peso_real, CG.updated_at as fecha, ubicacion, CG.id as id, C.id as cid, G.id as gid FROM cargagandola as CG INNER JOIN gandola as G
+        ON  CG.id_gandola = G.id 
+        INNER JOIN control as C 
+        ON G.id=C.id_gandola WHERE  finale='si' and ubicacion<>'Zulia'"; 
+        $gandola=DB::select($sql);
+        if(count($gandola)>0)
+        {
+         return view ('gandolas', ['gandol'=>$gandola, 'gandola'=>'1']); 
+        }
+        else
+        {
+         return view('gandolas', ['gandola'=>'0']);    
+        }  
+    }
+
 
      public function agregargandola(Request $request) 
     {
@@ -155,6 +174,36 @@ class GandolaController extends Controller
             $Gandola=Gandola::findOrFail($id);
             return view('editargandolas', ['gandola'=>$Gandola]);
     }
+    
+    public function pesos($id)
+    {
+            $Gandola=Cargagandola::findOrFail($id);
+            return view('pesos', ['gandola'=>$Gandola]);
+    }
+    
+     public function updatepesos($id, Request $request)
+    {
+           $gandola=Cargagandola::findOrFail($id);
+            $gandola->peso_real = $request ->real;
+            $gandola->peso_mermado = $request ->destino;
+            $gandola->save();
+         return redirect('/gandolas');
+    }
+    
+       public function ubicacion($id)
+    {
+            $Gandola=Control::findOrFail($id);
+            return view('ubicacion', ['gandola'=>$Gandola]);
+    }
+    
+     public function updateubicacion($id, Request $request)
+    {
+            $gandola=Control::findOrFail($id);
+            $gandola->ubicacion = $request ->ubicacion;
+            $gandola->save();
+         return redirect('/gandolas');
+    }
+    
       public function buscargandola(Request $request)
     {
          $sql = "SELECT * FROM gandola WHERE chofer='".$request->nombre."' 

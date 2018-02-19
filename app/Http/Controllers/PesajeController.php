@@ -10,6 +10,7 @@ use Palma\Precio;
 use Palma\Pesaje;
 use Palma\Gandola;
 use Palma\Cargagandola;
+use Palma\Control;
 use Barryvdh\DomPDF\Facade as PDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -163,7 +164,10 @@ class PesajeController extends Controller
                     $cargagandola->save();
                     $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
                     $cargagandola=DB::select($sqlcargagandola);
-       
+                    $control= new Control;
+                    $control->id_gandola = $idgandola;
+                    $control->ubicacion = 'Monagas';
+                    $control->save();
         foreach ($cargagandola as $cargagandolas) {
        $idcarga=$cargagandolas->id;
        }

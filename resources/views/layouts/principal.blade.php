@@ -10,7 +10,7 @@
     <title>Admin</title>
 
 
-<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+   <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
    <link href="{{asset('css/metisMenu.min.css')}}" rel="stylesheet">
    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
    <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
@@ -77,6 +77,9 @@
                                 </li>
                                 <li>
                                     <a href="/cupos"><i class='fa fa-bookmark fa-fw'></i> Cupos</a>
+                                </li>
+                                 <li>
+                                    <a href="/gandolas"><i class='fa fa-bookmark fa-fw'></i> Gandolas</a>
                                 </li>
                             </ul>
                         </li>

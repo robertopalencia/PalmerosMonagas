@@ -50,7 +50,11 @@ Route::get('/editargandola/{id}', 'GandolaController@viewupdate');
 Route::delete('/tablagandola/{id}','GandolaController@delete');
 Route::put('/tablagandolas/{id}','GandolaController@update');
 Route::put('/editargandolas/{id}','PesajeController@updatecarga');
-
+Route::get('gandolas', 'GandolaController@gandolas');
+Route::get('/pesos/{id}', 'GandolaController@pesos');
+Route::put('/pesos/{id}', 'GandolaController@updatepesos');
+Route::get('/ubicacion/{id}', 'GandolaController@ubicacion');
+Route::put('/ubicacion/{id}', 'GandolaController@updateubicacion');
 
 //***********************USUARIO**********************************
 Route::get('users','UsuarioController@listadousers');
@@ -96,6 +100,7 @@ Route::post('/buscarrecibopagados', 'DocumentosController@buscarrecibopago');
 Route::get('pdfinforme','PdfController@pdfinforme');
 Route::get('pdfinformepagos','PdfController@pdfinformepagos');
 Route::post('pdfid','PdfController@pdfid');
+Route::post('pdfguia','PdfController@pdfguia');
 
 //**********************MAIN*******************************
 Route::get('palma','MainController@index')->name('palma');

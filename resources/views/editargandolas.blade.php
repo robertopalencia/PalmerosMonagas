@@ -33,7 +33,7 @@
 </div>
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="peso" class="control-label">Peso del Vehiculo sin carga en KG</label>
+    <label for="peso" class="control-label">Capacidad de Carga en Kg</label>
     <input type="text" name="peso" class="form-control" value="{{$gandola->peso}}" required>
 </div>
 </div>
