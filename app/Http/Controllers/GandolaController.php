@@ -12,6 +12,8 @@ use Palma\Gandola;
 use Palma\Cargagandola;
 use Palma\Control;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 
@@ -53,12 +55,13 @@ class GandolaController extends Controller
     }
      public function endestino()
     {
-         $sql = "SELECT chofer, placa, peso_neto, peso_mermado, peso_real, C.updated_at as fecha, ubicacion, CG.id as id, C.id as cid, G.id as gid FROM cargagandola as CG INNER JOIN gandola as G
-        ON  CG.id_gandola = G.id 
-        INNER JOIN control as C 
-        ON CG.id=C.id_cargagandola WHERE  finale='si' and ubicacion='Zulia' order by C.updated_at DESC "; 
-        $gandola=DB::select($sql);
         
+        $gandola=DB::table('cargagandola')
+            ->join('gandola', 'cargagandola.id_gandola','=','gandola.id')
+            ->join ('control','cargagandola.id', '=','control.id_cargagandola')
+            ->select( 'gandola.chofer', 'gandola.placa', 'cargagandola.peso_neto', 'cargagandola.peso_mermado', 'cargagandola.peso_real', 'control.updated_at AS fecha', 'control.ubicacion', 'cargagandola.id AS id', 'control.id AS cid', 'gandola.id AS gid')
+            ->where('cargagandola.finale','=','si')->where('control.ubicacion','=','Zulia')
+            ->orderBy('control.updated_at','DESC')->paginate(20);
         if(count($gandola)>0)
         {
          return view ('endestino', ['gandol'=>$gandola, 'gandola'=>'1']); 

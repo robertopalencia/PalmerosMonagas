@@ -120,11 +120,7 @@ Route::get('/','Auth\LoginController@showLoginForm')->middleware('guest');
 Route::post('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@login'])->name('login');
 
 Route::get('register2', 'MainController@register')->name('register2');
-
-
-
-
-
+Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
 
 
@@ -151,3 +147,7 @@ Route::get('register2', 'MainController@register')->name('register2');
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

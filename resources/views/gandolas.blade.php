@@ -8,7 +8,7 @@
     <div class="panel panel-default">
         <div class="panel-heading"><strong>Listado de Gandolas en Camino</strong></div>
     <div class="panel-body">
-     <button type="submit" class="btn btn-success btn" onclick="location.href='endestino'"><i class="fa fa-plus"></i>En destino</button>
+     <button type="submit" class="btn btn-success btn" onclick="location.href='endestino'"><i class="fa fa-tag"></i>En destino</button>
      <br>
      <br>
       @if($gandola==0)

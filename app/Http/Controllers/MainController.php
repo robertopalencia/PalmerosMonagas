@@ -34,6 +34,7 @@ class MainController extends BaseController
               
         return view('index', ['productor'=>$productor, 'camion'=>$camion, 'pesaje'=>$pesaje,'usuario'=>$usuario ]);   
     }
+     
     
       public function agregarcupos()
     {

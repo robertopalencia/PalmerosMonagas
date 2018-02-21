@@ -8,13 +8,14 @@
     <div class="panel panel-default">
         <div class="panel-heading"><strong>Listado de Gandolas en Destino</strong></div>
     <div class="panel-body">
-     <button type="submit" class="btn btn-success btn" onclick="location.href='gandolas'"><i class="fa fa-plus"></i>En Camino</button>
+     <button type="submit" class="btn btn-success btn" onclick="location.href='gandolas'"><i class="fa fa-road"></i>En Camino</button>
     
       @if($gandola==0)
         <div class="col-xs-11">
 <div class="alert alert-danger" role="alert">No hay Gandolas en camino</div></div>
 @endif
-      @if($gandola>0)
+      @if($gandola>0) <br><br>
+       <strong>{!!$gandol->total()!!} Registros Encontrados</strong>
         <table class="table table-striped task-table">
             <thead>
                 <th>Chofer</th>
@@ -52,6 +53,7 @@
                 @endforeach
             </tbody>
         </table>
+        {!!$gandol->render()!!}
     </div>
     </div>
     @endif

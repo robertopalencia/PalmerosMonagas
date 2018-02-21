@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><strong>Administración ACEITECA-MONAGAS</strong></a>
+                <a class="navbar-brand" href="/home"><strong>Administración ACEITESCA-MONAGAS</strong></a>
                 
             </div>
            
@@ -79,7 +79,7 @@
                                     <a href="/cupos"><i class='fa fa-bookmark fa-fw'></i> Cupos</a>
                                 </li>
                                  <li>
-                                    <a href="/gandolas"><i class='fa fa-bookmark fa-fw'></i> Gandolas</a>
+                                    <a href="/gandolas"><i class='fa fa-book fa-fw'></i> Seguimiento</a>
                                 </li>
                             </ul>
                         </li>
