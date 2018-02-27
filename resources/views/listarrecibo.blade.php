@@ -59,14 +59,22 @@
                 <tr>
                    <?php $fecha=date_create($pesajes->fecha)?>
                     <td class="table-text"><div> {{date_format($fecha, "d-m-Y")}} </div></td>
-                    <td class="table-text"><div> {{number_format(($pesajes->carga-$pesajes->peso)/1000, 2,",",".")}} </div></td>
+                    <td class="table-text"><div> {{number_format(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000, 2,",",".")}} </div></td>
                     <td class="table-text"><div> {{$pesajes->descripcion}} </div></td>
-                    <td class="table-text"><div> {{number_format((($pesajes->carga-$pesajes->peso)/1000)*$pesajes->precio, 2, ",",".")}} </div></td>
+                    <td class="table-text"><div> {{number_format((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio, 2, ",",".")}} </div></td>
                    
                      <td>
                      
                        <button type="submit" class="btn btn-success btn-xs" onclick="if (confirm('¿Confirma, que este RECIBO fue cancelado?')) window.location.href='editarrecibo/{{$pesajes->id}}';">
                         <i class="fa fa-credit-card"></i> Pagado
+                    </button>
+                   
+                    </td>
+                      
+                     <td>
+                     
+                       <button type="submit" class="btn btn-success btn-xs" onclick="location.href='editarpesorecibo/{{$pesajes->id}}';">
+                         Descuento
                     </button>
                    
                     </td>

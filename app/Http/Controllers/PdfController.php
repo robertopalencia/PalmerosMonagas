@@ -149,15 +149,16 @@ class PdfController extends Controller
         $pesaje=DB::select($sqlcarga);
                 
         $total=0;
-               
+        $totaltoneladas=0;           
         foreach($pesaje as $pesajes)
         {    
             $total=$total + ((($pesajes->carga-$pesajes->peso)/1000)*$pesajes->precio);
             $fecha2=$pesajes->fecha;
             $fecha2=date_create($fecha2);
+            $totaltoneladas=$totaltoneladas + (($pesajes->carga-$pesajes->peso)/1000);
         }
         
-    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha]);
+    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);
     
     return $pdf->download('Recibo '.$productornombre.' '.date_format($fecha2,'d-m-Y').'.pdf');
         

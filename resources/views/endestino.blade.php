@@ -16,14 +16,17 @@
 @endif
       @if($gandola>0) <br><br>
        <strong>{!!$gandol->total()!!} Registros Encontrados</strong>
-        <table class="table table-striped task-table">
+         <table class="table table-striped task-table">
             <thead>
-                <th>Chofer</th>
+                
                 <th>Placa</th>
-                <th>Peso Origen</th>
-                <th>Peso Destino</th>
-                <th>Peso Real</th>
+                <th>Receptoria (Kg)</th>
+                <th>Monagas (Kg)</th>
+                <th>Diferencia (Kg)</th>
+                <th>Zulia (Kg)</th>
+                <th>Merma</th>
                 <th>Fecha</th>
+                <th>Ubicación</th>
                 <th>Acciones</th>
             </thead>
             <tbody><?php $anterior=0;?>
@@ -31,13 +34,16 @@
                 <tr>
                    @if($anterior!=$gandola->cid)
                    <?php $anterior=$gandola->cid; ?>
-                    <td class="table-text"><div> {{$gandola->chofer}} </div></td>
+                   
                     <td class="table-text"><div> {{$gandola->placa}} </div></td>
                     <td class="table-text"><div> {{$gandola->peso_neto}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_mermado}} </div></td>
                     <td class="table-text"><div> {{$gandola->peso_real}} </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_neto}} </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_mermado}} </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_mermado}} </div></td>
+                    
                     <td class="table-text"><div> {{$gandola->fecha}} </div></td>
-                
+                    <td class="table-text"><div> {{$gandola->ubicacion}} </div></td>
                     
                        <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='pesos/{{$gandola->id}}'">
                         <i class=""></i> Pesos
@@ -45,7 +51,7 @@
                     <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='ubicacion/{{$gandola->cid}}'">
                         <i class=""></i> Ubicacion
                     </button></td>
-                        
+           
                   
                     
                   @endif    

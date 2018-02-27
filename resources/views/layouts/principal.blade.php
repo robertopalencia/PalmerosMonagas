@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><strong>Administración ACEITESCA-MONAGAS</strong></a>
+                <a class="navbar-brand" href="/home"><strong>Administración ACEITECA-MONAGAS</strong></a>
                 
             </div>
            

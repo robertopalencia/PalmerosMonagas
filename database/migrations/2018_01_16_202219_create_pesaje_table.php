@@ -19,6 +19,7 @@ class CreatePesajeTable extends Migration
             $table->string('descripcion');
             $table->string('pago');
             $table->integer('peso');
+            $table->integer('descuento');
             $table->date('fecha');
             $table->integer('camion_id')->unsigned()->nullable();
             $table->foreign('camion_id')->references('id')->on('camion')->onDelete('set null');

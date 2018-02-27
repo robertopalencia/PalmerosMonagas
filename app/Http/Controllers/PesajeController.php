@@ -18,6 +18,22 @@ use Carbon\Carbon;
 class PesajeController extends Controller
 {
     
+    public function peso($id)
+    {
+            $peso=Pesaje::findOrFail($id);
+            return view('editarpesorecibo', ['peso'=>$peso]);
+    }
+    public function update($id, Request $request) 
+     
+     {
+       
+    $pesaje=Pesaje::findOrFail($id);
+     $pesaje->descuento = $request ->real;
+    
+            $pesaje->save();
+    return back()->with('msj','Guardado con exito');  
+     }
+    
     public function vistaagregar()
     {
         $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 

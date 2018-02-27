@@ -6,8 +6,8 @@
    
     <meta charset="UTF-8">
     <link href="css/pdf.css" rel="stylesheet">
-    <h1><strong>RAUTEF</strong></h1>
-    Rif: J-410318425
+    <h1><strong>ASOCIACION COOPERATIVA AGROPECUARIA BEJUMA RL</strong></h1>
+    RIF: J-31664833-8
     <title>Documentos</title>
 </head>
 <body>

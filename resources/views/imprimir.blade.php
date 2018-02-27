@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="css/pdf.css" rel="stylesheet">
-    <h1><strong>RAUTEF</strong></h1>
-                RIF: J-410318425
+    <h1><strong>ASOCIACION COOPERATIVA AGROPECUARIA BEJUMA RL</strong></h1>
+                RIF: J-31664833-8
     <div align="right">{{$fecha}}</div>
     <div align="left">
      <strong>{{$productornombre}}</strong> <br>
@@ -61,7 +61,7 @@
         
        
 
-    <p align="justify">Recibí de <strong>RAUTEF</strong> la cantidad de {{number_format($total, 2, ",",".")}} Bs.F por concepto de: ___________________________________________________________________________________ </p>
+    <p align="justify">Recibí de Asociación Cooperativa Agropecuaria Bejuma RL <strong></strong> la cantidad de {{number_format($total, 2, ",",".")}} Bs.F por concepto de: <strong>Pago de {{number_format($totalt, 2, ",",".")}} Toneladas de Fruta fresca de palma aceitera</strong></p>
        
        <br><br>
         <STRONG>Recibí Conforme:____________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entregue Conforme:___________________</STRONG>

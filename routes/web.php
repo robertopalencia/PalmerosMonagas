@@ -89,7 +89,8 @@ Route::get('pagregar','PesajeController@vistaagregar');
 Route::post('pdf','PesajeController@pdfrecibo');
 Route::post('agregarcarga', 'PesajeController@agregarcarga');
 Route::post('pdfcarga','PesajeController@pdfcarga');
-
+Route::get('editarpesorecibo/{id}','PesajeController@peso');
+Route::put('editarpesorecibo/{id}','PesajeController@update');
 //**********************DOCUMENTOS*******************************
 Route::get('recibo','DocumentosController@recibo');
 Route::get('informe','DocumentosController@listadoinforme');

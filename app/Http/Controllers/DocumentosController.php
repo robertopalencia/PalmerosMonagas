@@ -59,7 +59,7 @@ class DocumentosController extends Controller
             $productordir=$productores->direccion;
         }
         
-        $sqlcarga = "SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id 
+        $sqlcarga = "SELECT P.id, descuento, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id 
         FROM pesaje P 
         INNER JOIN precio B 
         ON P.precio_id = B.id
@@ -70,7 +70,7 @@ class DocumentosController extends Controller
         $total=0;
         foreach($pesaje as $pesajes)
         {
-            $total=$total + ((($pesajes->carga-$pesajes->peso)/1000)*$pesajes->precio);
+            $total=$total + ((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio);
            
         }
         
