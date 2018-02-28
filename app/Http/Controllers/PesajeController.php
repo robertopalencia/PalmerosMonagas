@@ -17,6 +17,24 @@ use Dompdf\Options;
 use Carbon\Carbon;
 class PesajeController extends Controller
 {
+    public function control()
+    {
+        $carbon = new \Carbon\Carbon();
+        $fecha = $carbon->now();
+        $fecha=$fecha->format('Y-m-d');   
+        
+        $sql="SELECT Pe.peso AS peso, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+           FROM pesaje Pe 
+           INNER JOIN productor Po 
+           ON Pe.productor_id=Po.id
+           INNER JOIN camion C
+           ON Pe.camion_id=C.id 
+           INNER JOIN precio Pr 
+           ON Pe.precio_id=Pr.id
+           WHERE fecha='".$fecha."'";
+        $control=DB::select($sql);
+            return view('control',['controles'=>$control]);
+    }
     
     public function peso($id)
     {

@@ -36,7 +36,7 @@
                 <th>Cedula de Identidad</th>
                 <th>Telefono</th>
                 <th>Placa</th>
-                <th>Peso sin Carga</th>
+                <th>Capacidad de Carga</th>
                 <th>Acciones</th>
             </thead>
             <tbody>

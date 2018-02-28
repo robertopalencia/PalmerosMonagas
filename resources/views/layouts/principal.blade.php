@@ -81,6 +81,9 @@
                                  <li>
                                     <a href="/gandolas"><i class='fa fa-book fa-fw'></i> Seguimiento</a>
                                 </li>
+                                <li>
+                                    <a href="/control"><i class='fa fa-book fa-fw'></i> Control</a>
+                                </li>
                             </ul>
                         </li>
                         <li>

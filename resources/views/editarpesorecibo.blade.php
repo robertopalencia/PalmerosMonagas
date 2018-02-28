@@ -6,7 +6,7 @@
 @if(session()->has('msj'))
 <div class="alert alert-success" role="alert">
         {{session('msj')}}
-    </div>
+</div>
 @endif
 <form action="{{url('editarpesorecibo')}}/{{$peso->id}}" method="POST">
 {{csrf_field()}}
