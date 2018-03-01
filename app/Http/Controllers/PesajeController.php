@@ -23,7 +23,7 @@ class PesajeController extends Controller
         $fecha = $carbon->now();
         $fecha=$fecha->format('Y-m-d');   
         
-        $sql="SELECT Pe.peso AS peso, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, descuento, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -33,7 +33,35 @@ class PesajeController extends Controller
            ON Pe.precio_id=Pr.id
            WHERE fecha='".$fecha."'";
         $control=DB::select($sql);
-            return view('control',['controles'=>$control]);
+        $monto=0;
+        foreach ($control as $precio)
+        {
+            $monto=$monto+((($precio->carga-$precio->peso-$precio->descuento)/1000)*$precio->precio);
+        }
+            return view('control',['controles'=>$control, 'total'=>$monto, 'hoy'=>'1']);
+    }
+    public function search(Request $request)
+    {
+        
+        
+        $sql="SELECT Pe.peso AS peso, descuento, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+           FROM pesaje Pe 
+           INNER JOIN productor Po 
+           ON Pe.productor_id=Po.id
+           INNER JOIN camion C
+           ON Pe.camion_id=C.id 
+           INNER JOIN precio Pr 
+           ON Pe.precio_id=Pr.id
+           WHERE fecha='".$request->nombre."'";
+        $control=DB::select($sql);
+        $monto=0;
+        
+        $fecha=date_create($request->nombre);
+        foreach ($control as $precio)
+        {
+            $monto=$monto+((($precio->carga-$precio->peso-$precio->descuento)/1000)*$precio->precio);
+        }
+            return view('control',['controles'=>$control, 'total'=>$monto,'msj'=>'No hay registros para la fecha: '.$request->nombre, 'hoy'=>'0','fecha'=>$fecha]);
     }
     
     public function peso($id)
@@ -49,6 +77,26 @@ class PesajeController extends Controller
      $pesaje->descuento = $request ->real;
     
             $pesaje->save();
+    return back()->with('msj','Guardado con exito');  
+     }
+     public function pesocamion($id)
+    {
+            $peso=Pesaje::findOrFail($id);
+         $camion=Camion::findOrFail($peso->camion_id);
+            
+            return view('editarpesocamion', ['peso'=>$peso, 'camion'=>$camion]);
+    }
+    public function updatecamion($id, Request $request) 
+     
+     {
+       
+    $pesaje=Pesaje::findOrFail($id);
+   
+    $camion=Camion::findOrFail($pesaje->camion_id);
+    $camion->peso = $request->real;
+    $camion->save();
+    $pesaje->peso = $request ->real;
+    $pesaje->save();
     return back()->with('msj','Guardado con exito');  
      }
     
@@ -122,8 +170,8 @@ class PesajeController extends Controller
                      
                     if ($request->cedula==$productores->cedula){
                         $idproductor=$productores->id;
-                        $productornombre=$productores->nombre;
-                        $productorcedula=$productores->cedula;
+                        $productornombre=$productores->finca;
+                        $productorrif=$productores->rif;
                     }
                     
                 }
@@ -185,7 +233,7 @@ class PesajeController extends Controller
                 $fecha=$fecha->format('Y-m-d');
                 $carga->fecha = $fecha; 
              if($carga->save()){
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorcedula)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso);
+                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('descuento', '0');
             }
                 }
             
@@ -215,7 +263,7 @@ class PesajeController extends Controller
             $fecha=$fecha->format('Y-m-d');
             $carga->fecha = $fecha; 
              if($carga->save()){
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorcedula)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
+                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
             }
                 }
           
@@ -271,7 +319,7 @@ class PesajeController extends Controller
         $fecha = $carbon->now();
         $fecha=$fecha->format('d-m-Y');
             
-        $pdf= PDF::loadView('imprimircarga',['peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'cedula'=>$request->cedula,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa]);
+        $pdf= PDF::loadView('imprimircarga',['peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'cedula'=>$request->cedula,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento]);
         
         return $pdf->download('Nota de Entrega '.$request->nombre.' '.$fecha.' .pdf');
     }

@@ -11,6 +11,7 @@
 {{csrf_field()}}
             <div class="alert alert-success" role="alert">{{session('msj')}}
                 <input type="hidden" name="peso" class="form-control" value="{{session('peso')}}">
+                 <input type="hidden" name="descuento" class="form-control" value="{{session('descuento')}}">
                 <input type="hidden" name="carga" class="form-control" value="{{session('carga')}}">
                 <input type="hidden" name="precio" class="form-control" value="{{session('precio')}}">
                 <input type="hidden" name="cedula" class="form-control" value="{{session('cedula')}}">

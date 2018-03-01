@@ -7,6 +7,7 @@
 <div class="alert alert-success" role="alert">
         {{session('msj')}}
 </div>
+<strong><h3>Regrese una pagina con su navegador, luego recargue con F5</h3></strong>
 @endif
 <form action="{{url('editarpesorecibo')}}/{{$peso->id}}" method="POST">
 {{csrf_field()}}
