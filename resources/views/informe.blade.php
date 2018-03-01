@@ -87,9 +87,9 @@
                       <td class="table-text"><div> {{$var->tipocuenta}} </div></td>
                     <td class="table-text"><div> {{$var->cuenta}} </div></td>
                    
-                    <td class="table-text"><div> {{number_format(($var->pcarga-$var->ppeso)/1000, 2,",",".")}} </div></td>
+                    <td class="table-text"><div> {{number_format(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2,",",".")}} </div></td>
                    
-                    <td class="table-text"><div> {{number_format((($var->pcarga-$var->ppeso)/1000)*$var->precio, 2, ",",".")}} </div></td>
+                    <td class="table-text"><div> {{number_format((($var->pcarga-$var->ppeso-$var->pdescuento)/1000)*$var->precio, 2, ",",".")}} </div></td>
                    
                      
                 </tr>

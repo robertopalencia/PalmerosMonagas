@@ -9,12 +9,14 @@
                 RIF: J-31664833-8
     <div align="right">{{$fecha}}</div>
     <div align="left">
-     <strong>{{$productornombre}}</strong> <br>
-       <strong>{{$productorfinca}}</strong> <br><strong>RIF:</strong>
-       {{$productorrif}} <br><strong>C.I.:</strong>
-       {{$productorcedula}} <br>
+     
+       <strong>{{$productorfinca}}</strong> <br>
+       <strong>RIF:</strong>{{$productorrif}} <br>
+       <strong>Dirección: </strong>{{$productordir}} <br>
+       <strong>Representante:</strong> <br>
+       <strong>{{$productornombre}}</strong> <br>
+       <strong>C.I.:</strong>{{$productorcedula}} <br>
        <strong>Email: </strong>{{$productorcorreo}} <br>
-       <strong>Dirección: </strong>{{$productordir}}
        </div>
     <title>RECIBO</title>
 </head>
@@ -39,9 +41,9 @@
                 <tr>
                    <?php $fecha2=date_create($pesajes->fecha); ?>
                     <td> {{date_format($fecha2, 'd-m-Y')}} </td>
-                    <td > {{number_format(($pesajes->carga-$pesajes->peso)/1000, 2,",",".")}} <strong>T</strong> </td>
+                    <td > {{number_format(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000, 2,",",".")}} <strong>T</strong> </td>
                     <td >{{$pesajes->descripcion}}</td>
-                    <td >{{number_format((($pesajes->carga-$pesajes->peso)/1000)*$pesajes->precio, 2, ",",".")}}</td>
+                    <td >{{number_format((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio, 2, ",",".")}}</td>
                    
                 </tr>
                 

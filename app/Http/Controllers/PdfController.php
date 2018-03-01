@@ -19,7 +19,7 @@ class PdfController extends Controller
     public function pdfinforme()   
     {
        $sql = "
-            SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga 
+            SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, SUM(P.descuento) AS pdescuento, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga 
             FROM pesaje P 
             INNER JOIN precio B 
             ON P.precio_id = B.id 
@@ -32,7 +32,7 @@ class PdfController extends Controller
             ORDER BY B.precio ASC";  
             
         $sqltotal="
-                SELECT sum(peso) as peso, sum(carga) as carga, precio 
+                SELECT sum(peso) as peso, sum(carga) as carga, sum(descuento) as descuento, precio 
                 FROM pesaje 
                 INNER JOIN precio 
                 ON pesaje.precio_id=precio.id 
@@ -45,7 +45,7 @@ class PdfController extends Controller
                 
         foreach($totales as $var)
         {
-            $total=((($var->carga-$var->peso)/1000)*$var->precio)+$total;
+            $total=((($var->carga-$var->peso-$var->descuento)/1000)*$var->precio)+$total;
         }
         
         $carbon = new \Carbon\Carbon();
@@ -59,7 +59,7 @@ class PdfController extends Controller
     public function pdfinformepagos(Request $request)
     {
          $sql = "
-                SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga 
+                SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, SUM(P.descuento) AS pdescuento, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga 
                 FROM pesaje P 
                 INNER JOIN precio B 
                 ON P.precio_id = B.id 
@@ -73,7 +73,7 @@ class PdfController extends Controller
                 ORDER BY B.precio ASC";  
             
             $sqltotal="
-                        SELECT sum(peso) as peso, sum(carga) as carga, precio 
+                        SELECT sum(peso) as peso, sum(carga) as carga, sum(descuento) as descuento, precio 
                         FROM pesaje 
                         INNER JOIN precio 
                         ON pesaje.precio_id=precio.id 
@@ -86,7 +86,7 @@ class PdfController extends Controller
             
             foreach($totales as $var)
             {
-                    $total=((($var->carga-$var->peso)/1000)*$var->precio)+$total;
+                    $total=((($var->carga-$var->peso-$var->descuento)/1000)*$var->precio)+$total;
             }
         
             $productor=DB::select($sql);
@@ -137,7 +137,7 @@ class PdfController extends Controller
         }
         
         $sqlcarga = "
-                    SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id 
+                    SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id, descuento 
                     FROM pesaje P INNER JOIN precio B 
                     ON P.precio_id = B.id
                     WHERE productor_id='".$productorid."' AND  P.id='".$request->id."'";
@@ -147,15 +147,14 @@ class PdfController extends Controller
         $fecha=$fecha->format('d-m-Y');
                 
         $pesaje=DB::select($sqlcarga);
-                
         $total=0;
         $totaltoneladas=0;           
         foreach($pesaje as $pesajes)
         {    
-            $total=$total + ((($pesajes->carga-$pesajes->peso)/1000)*$pesajes->precio);
+            $total=$total + ((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio);
             $fecha2=$pesajes->fecha;
             $fecha2=date_create($fecha2);
-            $totaltoneladas=$totaltoneladas + (($pesajes->carga-$pesajes->peso)/1000);
+            $totaltoneladas=$totaltoneladas + (($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000);
         }
         
     $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);

@@ -63,8 +63,8 @@
                     <td><div> {{$var->banco}} </div></td>
                     <td><div> {{$var->tipocuenta}} </div></td>
                     <td><div> {{$var->cuenta}} </div></td>
-                    <td><div> {{number_format(($var->pcarga-$var->ppeso)/1000, 2,",",".")}} </div></td>
-                    <td><div> {{number_format((($var->pcarga-$var->ppeso)/1000)*$var->precio, 2, ",",".")}} </div></td>
+                    <td><div> {{number_format(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2,",",".")}} </div></td>
+                    <td><div> {{number_format((($var->pcarga-$var->ppeso-$var->pdescuento)/1000)*$var->precio, 2, ",",".")}} </div></td>
                    
                      
                 </tr>

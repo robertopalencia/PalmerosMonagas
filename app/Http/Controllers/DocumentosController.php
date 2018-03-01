@@ -141,7 +141,7 @@ class DocumentosController extends Controller
     public function informe()
     {
        $sql = "
-       SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga 
+       SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, SUM(P.descuento) AS pdescuento 
        FROM pesaje P 
        INNER JOIN precio B 
        ON P.precio_id = B.id 
@@ -153,7 +153,7 @@ class DocumentosController extends Controller
        ORDER BY B.precio ASC";  
             
         $sqltotal="
-        SELECT sum(peso) as peso, sum(carga) as carga, precio 
+        SELECT sum(peso) as peso, sum(carga) as carga, precio, sum(descuento) as descuento
         FROM pesaje 
         INNER JOIN precio 
         ON pesaje.precio_id=precio.id 
@@ -164,7 +164,7 @@ class DocumentosController extends Controller
         $total=0;
         foreach($totales as $var)
         {
-            $total=((($var->carga-$var->peso)/1000)*$var->precio)+$total;
+            $total=((($var->carga-$var->peso-$var->descuento)/1000)*$var->precio)+$total;
         }
         
         $productor=DB::select($sql);
@@ -174,7 +174,7 @@ class DocumentosController extends Controller
     public function buscarrecibopago(Request $request)
     {
         $sql = "
-            SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga 
+            SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, SUM(P.descuento) AS pdescuento 
             FROM pesaje P 
             INNER JOIN precio B 
             ON P.precio_id = B.id 
@@ -188,7 +188,7 @@ class DocumentosController extends Controller
             ORDER BY B.precio ASC";  
             
         $sqltotal=" 
-            SELECT sum(peso) as peso, sum(carga) as carga, precio 
+            SELECT sum(peso) as peso, sum(carga) as carga, sum(descuento) as descuento, precio 
             FROM pesaje 
             INNER JOIN precio
             ON pesaje.precio_id=precio.id 
@@ -202,7 +202,7 @@ class DocumentosController extends Controller
                 
         foreach($totales as $var)
         {
-                $total=((($var->carga-$var->peso)/1000)*$var->precio)+$total;
+                $total=((($var->carga-$var->peso-$var->descuento)/1000)*$var->precio)+$total;
         }
         
         $productor=DB::select($sql);

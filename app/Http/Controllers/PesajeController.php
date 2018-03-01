@@ -38,7 +38,7 @@ class PesajeController extends Controller
         {
             $monto=$monto+((($precio->carga-$precio->peso-$precio->descuento)/1000)*$precio->precio);
         }
-            return view('control',['controles'=>$control, 'total'=>$monto, 'hoy'=>'1']);
+            return view('control',['controles'=>$control, 'total'=>$monto, 'hoy'=>'1', 'msj'=>'Para hoy, no hay registros aún']);
     }
     public function search(Request $request)
     {
@@ -346,7 +346,7 @@ class PesajeController extends Controller
                $productorcorreo=$productores->correo;
                  $productordir=$productores->direccion;
             }
-        $sqlcarga = "SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id FROM pesaje P INNER JOIN precio B 
+        $sqlcarga = "SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id, descuento FROM pesaje P INNER JOIN precio B 
         ON P.precio_id = B.id
         WHERE productor_id='".$productorid."' AND  pago='NO'";
       $carbon = new \Carbon\Carbon();
@@ -355,12 +355,13 @@ class PesajeController extends Controller
                 
                 $pesaje=DB::select($sqlcarga);
                 $total=0;
+        $totaltoneladas=0;
                foreach($pesaje as $pesajes){
-            $total=$total + ((($pesajes->carga-$pesajes->peso)/1000)*$pesajes->precio);
-           
+            $total=$total + ((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio);
+           $totaltoneladas=$totaltoneladas + (($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000);
                
             }
-    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha]);
+    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);
     return $pdf->download('Recibo Total '.$productornombre.' '.$fecha.'.pdf');
     }
       public function updatecarga($id) 

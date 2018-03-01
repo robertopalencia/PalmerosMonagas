@@ -33,12 +33,16 @@
 @endif
    @if(count($productor)>0)
       <div class="pull-left">
-       <strong>{{$productornombre}}</strong> <br>
+       
        <strong>{{$productorfinca}}</strong> <br><strong>RIF:</strong>
-       {{$productorrif}} <br><strong>C.I.:</strong>
-       {{$productorcedula}} <br>
+       {{$productorrif}} <br>
+       <strong>Dirección: </strong>{{$productordir}} <br>
+       <strong>Representante: </strong> <br>
+       <strong>{{$productornombre}}</strong> <br>
+       <strong>C.I.:</strong>{{$productorcedula}} <br>
+       
        <strong>Email: </strong>{{$productorcorreo}} <br>
-       <strong>Dirección: </strong>{{$productordir}}
+       
        </div>
        @endif
        @if (count($pesaje)>0)
