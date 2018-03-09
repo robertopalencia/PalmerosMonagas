@@ -23,7 +23,7 @@ class PesajeController extends Controller
         $fecha = $carbon->now();
         $fecha=$fecha->format('Y-m-d');   
         
-        $sql="SELECT Pe.peso AS peso, descuento, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, descuento, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -44,7 +44,7 @@ class PesajeController extends Controller
     {
         
         
-        $sql="SELECT Pe.peso AS peso, descuento, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, Pe.created_at AS entrada, Pe.updated_at AS salida, descuento, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -318,10 +318,13 @@ class PesajeController extends Controller
         $carbon = new \Carbon\Carbon();
         $fecha = $carbon->now();
         $fecha=$fecha->format('d-m-Y');
-            
-        $pdf= PDF::loadView('imprimircarga',['peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'cedula'=>$request->cedula,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento]);
-        
-        return $pdf->download('Nota de Entrega '.$request->nombre.' '.$fecha.' .pdf');
+        $entrada=date_create($request->entrada);
+        $entrada=$entrada->format('G:i:s');
+        $salida=date_create($request->salida);
+        $salida=$salida->format('G:i:s');  
+        $pdf= PDF::loadView('imprimircarga',['peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'cedula'=>$request->cedula,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento, 'entrada'=>$entrada, 'salida'=>$salida, 'id'=>$request->id]);
+        $pdf->setPaper("A8");
+        return $pdf->stream('Nota de Entrega '.$request->nombre.' '.$fecha.' .pdf');
     }
     public function pdfrecibo(Request $request) 
     {

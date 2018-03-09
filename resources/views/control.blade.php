@@ -90,6 +90,9 @@
                 <input type="hidden" name="cedula" class="form-control" value="{{$control->rif}}">
                 <input type="hidden" name="nombre" class="form-control" value="{{$control->finca}}">
                 <input type="hidden" name="placa" class="form-control" value="{{$control->placa}}">
+                <input type="hidden" name="id" class="form-control" value="{{$control->pid}}">
+                <input type="hidden" name="entrada" class="form-control" value="{{$control->entrada}}">
+                <input type="hidden" name="salida" class="form-control" value="{{$control->salida}}">
                 <button type="submit" class='btn btn-xs'>
                     <i class="fa fa-print btn-xs"></i>  
                 </button>
