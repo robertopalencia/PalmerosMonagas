@@ -23,7 +23,7 @@ class PesajeController extends Controller
         $fecha = $carbon->now();
         $fecha=$fecha->format('Y-m-d');   
         
-        $sql="SELECT Pe.peso AS peso, descuento, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, descuento, C.cedula as cedula, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -44,7 +44,7 @@ class PesajeController extends Controller
     {
         
         
-        $sql="SELECT Pe.peso AS peso, Pe.created_at AS entrada, Pe.updated_at AS salida, descuento, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, descuento, C.cedula as cedula, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -134,7 +134,7 @@ class PesajeController extends Controller
             [
                 'carga'=>'required |max:2000000|numeric',
                 'descripcion'=>'required |max:70',
-                'cedula'=>'required |min:100000|max:200000000|numeric',
+                'rif'=>'required |min:6|max:14',
                 'placa'=>'required |min:6|max:9',
                 
             ]);
@@ -168,7 +168,7 @@ class PesajeController extends Controller
                  foreach ($productor as $productores) {
                     
                      
-                    if ($request->cedula==$productores->cedula){
+                    if ($request->rif==$productores->rif){
                         $idproductor=$productores->id;
                         $productornombre=$productores->finca;
                         $productorrif=$productores->rif;
@@ -280,7 +280,7 @@ class PesajeController extends Controller
                         
                          if ($idcamion==0) 
                          {
-                         return back()->with('msj3', 'La Placa '.$request->placa.' del Vehiculo NO EXISTE y la Cedula de Identidad '.$request->cedula." NO EXISTE");
+                         return back()->with('msj3', 'La Placa '.$request->placa.' del Vehiculo NO EXISTE y el RIF '.$request->rif." NO EXISTE");
                         }
                         else
                         { 
@@ -290,10 +290,10 @@ class PesajeController extends Controller
                         }
                             else 
                             {
-                               return back()->with('msj3', 'La Cedula de Identidad '.$request->cedula.' NO EXISTE'); 
+                               return back()->with('msj3', 'El RIF '.$request->rif.' NO EXISTE'); 
                             }
                              
-                        }
+                        } 
                     }
                     else 
                     {
@@ -315,15 +315,16 @@ class PesajeController extends Controller
     }
     public function pdfcarga(Request $request)
     {
-        $carbon = new \Carbon\Carbon();
-        $fecha = $carbon->now();
+         $fecha=date_create($request->entrada);
         $fecha=$fecha->format('d-m-Y');
         $entrada=date_create($request->entrada);
         $entrada=$entrada->format('G:i:s');
         $salida=date_create($request->salida);
-        $salida=$salida->format('G:i:s');  
-        $pdf= PDF::loadView('imprimircarga',['peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'cedula'=>$request->cedula,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento, 'entrada'=>$entrada, 'salida'=>$salida, 'id'=>$request->id]);
-        $pdf->setPaper("A8");
+        $salida=$salida->format('G:i:s'); 
+        
+        $pdf= PDF::loadView('imprimircarga',['cedula'=>$request->cedula, 'cod'=>$request->cod, 'chofer'=>$request->chofer, 'peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'rif'=>$request->rif,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento, 'entrada'=>$entrada, 'salida'=>$salida, 'id'=>$request->id]);
+        $paper_size = array(0,0,200,370);
+        $pdf->setPaper($paper_size);
         return $pdf->stream('Nota de Entrega '.$request->nombre.' '.$fecha.' .pdf');
     }
     public function pdfrecibo(Request $request) 
@@ -364,8 +365,10 @@ class PesajeController extends Controller
            $totaltoneladas=$totaltoneladas + (($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000);
                
             }
-    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);
-    return $pdf->download('Recibo Total '.$productornombre.' '.$fecha.'.pdf');
+    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'productorid'=>$productorid, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);
+        $paper_size = array(0,0,200,470);
+        $pdf->setPaper($paper_size);
+    return $pdf->stream('Recibo Total '.$productornombre.' '.$fecha.'.pdf');
     }
       public function updatecarga($id) 
      {

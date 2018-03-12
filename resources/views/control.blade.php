@@ -87,8 +87,11 @@
                 <input type="hidden" name="carga" class="form-control" value="{{$control->carga}}">
                 <input type="hidden" name="descuento" class="form-control" value="{{$control->descuento}}">
                 <input type="hidden" name="precio" class="form-control" value="{{$control->precio}}">
-                <input type="hidden" name="cedula" class="form-control" value="{{$control->rif}}">
+                <input type="hidden" name="rif" class="form-control" value="{{$control->rif}}">
                 <input type="hidden" name="nombre" class="form-control" value="{{$control->finca}}">
+                <input type="hidden" name="cod" class="form-control" value="{{$control->poid}}">
+                <input type="hidden" name="chofer" class="form-control" value="{{$control->nombre}}">
+                <input type="hidden" name="cedula" class="form-control" value="{{$control->cedula}}">
                 <input type="hidden" name="placa" class="form-control" value="{{$control->placa}}">
                 <input type="hidden" name="id" class="form-control" value="{{$control->pid}}">
                 <input type="hidden" name="entrada" class="form-control" value="{{$control->entrada}}">

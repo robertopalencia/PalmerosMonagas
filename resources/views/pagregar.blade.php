@@ -58,15 +58,15 @@
         </div>
         <div class="col-xs-5">
             <div class="form-group">
-                <label for="cedula" class="control-label">Cedula de Identidad Productor</label>
-                <input type="text" name="cedula" class="form-control" required>
+                <label for="rif" class="control-label">RIF Productor</label>
+                <input type="text" name="rif" class="form-control" required>
             </div>
         </div>
      @if($idgandola==0)
         <div class="col-xs-5">
             <div class="form-group">
                 <label for="gandola" class="control-label">Placa Gandola</label>
-                <input type="text" name="gandola" class="form-control" required>
+                <input type="text" name="gandola" class="form-control" required
             </div>
         </div>
         @else

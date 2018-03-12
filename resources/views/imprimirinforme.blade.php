@@ -5,7 +5,7 @@
 <head>
    
     <meta charset="UTF-8">
-    <link href="css/pdf.css" rel="stylesheet">
+    <link href="css/pdfinformes.css" rel="stylesheet">
     <h1><strong>ASOCIACION COOPERATIVA AGROPECUARIA BEJUMA RL</strong></h1>
     RIF: J-31664833-8
     <title>Documentos</title>

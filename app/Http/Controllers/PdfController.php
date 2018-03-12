@@ -53,7 +53,7 @@ class PdfController extends Controller
         $fecha=$fecha->format('d/m/Y');
         $productor=DB::select($sql);
         $pdf= PDF::loadView('imprimirinforme',['productor'=>$productor, 'total'=>$total,'cedula'=>'0','precio'=>'0','fecha'=>$fecha]);
-        return $pdf->download('INFORME DE RECIBOS NO PAGADOS '.$fecha.'.pdf'); 
+        return $pdf->stream('INFORME DE RECIBOS NO PAGADOS '.$fecha.'.pdf'); 
     }
     
     public function pdfinformepagos(Request $request)
@@ -97,7 +97,7 @@ class PdfController extends Controller
         
             $pdf= PDF::loadView('imprimirinformepago',['productor'=>$productor, 'total'=>$total,'cedula'=>'0','precio'=>'0','fecha'=>$fecha]);
             
-            return $pdf->download('INFORME DE RECIBOS PAGADOS '.date_format($fecha, "d-m-Y").'.pdf');
+            return $pdf->stream('INFORME DE RECIBOS PAGADOS '.date_format($fecha, "d-m-Y").'.pdf');
     }
     
     public function pdfid( Request $request)
@@ -137,7 +137,7 @@ class PdfController extends Controller
         }
         
         $sqlcarga = "
-                    SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id, descuento 
+                    SELECT  P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id, descuento
                     FROM pesaje P INNER JOIN precio B 
                     ON P.precio_id = B.id
                     WHERE productor_id='".$productorid."' AND  P.id='".$request->id."'";
@@ -157,9 +157,10 @@ class PdfController extends Controller
             $totaltoneladas=$totaltoneladas + (($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000);
         }
         
-    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);
-    
-    return $pdf->download('Recibo '.$productornombre.' '.date_format($fecha2,'d-m-Y').'.pdf');
+    $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'pesaje'=>$pesaje, 'productorid'=>$productorid, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas]);
+    $paper_size = array(0,0,200,470);
+    $pdf->setPaper($paper_size);
+    return $pdf->stream('Recibo '.$productornombre.' '.date_format($fecha2,'d-m-Y').'.pdf');
         
     }
      
