@@ -57,11 +57,23 @@
             </div>
         </div>
         <div class="col-xs-5">
-            <div class="form-group">
-                <label for="rif" class="control-label">RIF Productor</label>
-                <input type="text" name="rif" class="form-control" required>
-            </div>
-        </div>
+<div class="form-group">
+    <label for="rif" class="control-label">RIF</label>
+    <div class="input-group">
+    <select name="letra" class="form-control" required>
+     <option value=""></option>
+     <option value="C">C</option>
+     <option value="E">E</option>
+     <option value="G">G</option>
+     <option value="J">J</option>
+     <option value="P">P</option>
+     <option value="V">V</option>
+    </select>
+    <span class="input-group-addon">-</span> 
+    <input type="text" name="rif" class="form-control" required>
+    </div>
+</div>
+</div>
      @if($idgandola==0)
         <div class="col-xs-5">
             <div class="form-group">

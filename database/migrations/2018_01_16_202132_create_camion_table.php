@@ -16,7 +16,7 @@ class CreateCamionTable extends Migration
         Schema::create('camion', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->integer('cedula');
+            $table->string('cedula');
             $table->string('placa');
              $table->string('modelo');
             $table->string('marca');

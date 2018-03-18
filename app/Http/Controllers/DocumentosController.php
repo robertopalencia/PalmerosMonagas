@@ -10,18 +10,20 @@ use Palma\Pesaje;
 
 class DocumentosController extends Controller
 {  
-    public function listadoinforme()
-    {
+    public function listadoinforme(Request $request)
+    { $request->user()->authorizeRoles(['admin']);
         return view ('informe');    
     }
     
-    public function recibo()
-    {
+    public function recibo(Request $request)
+    {   
+        $request->user()->authorizeRoles(['admin']);
         return view ('recibo');    
     }
     
-    public function listarrecibo()
+    public function listarrecibo( Request $request)
     {
+        $request->user()->authorizeRoles(['admin']);
         return view ('listarrecibo');    
     }
     
@@ -70,7 +72,7 @@ class DocumentosController extends Controller
         $total=0;
         foreach($pesaje as $pesajes)
         {
-            $total=$total + ((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio);
+            $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000,$pesajes->precio,2));
            
         }
         
@@ -141,72 +143,58 @@ class DocumentosController extends Controller
     public function informe()
     {
        $sql = "
-       SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, SUM(P.descuento) AS pdescuento 
+       SELECT P.id AS pid, C.id AS cp, C.tipo, P.carga AS pcarga, P.peso AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, P.descuento AS pdescuento 
        FROM pesaje P 
        INNER JOIN precio B 
        ON P.precio_id = B.id 
        INNER JOIN productor R 
        ON P.productor_id = R.id 
        INNER JOIN banco C ON R.id = C.productor_id 
-       WHERE P.pago = 'NO' 
-       GROUP BY C.id, B.precio 
+       WHERE P.pago = 'NO'  
        ORDER BY B.precio ASC";  
+        $carbon = new \Carbon\Carbon();
+        $fecha = $carbon->now();
+        $fecha=$fecha->format('d-m-Y');
+         
             
-        $sqltotal="
-        SELECT sum(peso) as peso, sum(carga) as carga, precio, sum(descuento) as descuento
-        FROM pesaje 
-        INNER JOIN precio 
-        ON pesaje.precio_id=precio.id 
-        WHERE pago='NO' 
-        GROUP BY precio.id";
         
-        $totales=DB::select($sqltotal);
+         $productor=DB::select($sql);
+       
         $total=0;
-        foreach($totales as $var)
+        foreach($productor as $var)
         {
-            $total=((($var->carga-$var->peso-$var->descuento)/1000)*$var->precio)+$total;
+            $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2))*$var->precio)+$total;
         }
         
         $productor=DB::select($sql);
             
-        return view('informe', ['productor'=>$productor, 'total'=>$total,'cedula'=>'0','precio'=>'0','msj'=>'NO HAY RECIBOS POR PAGAR', 'pago'=>'0']); 
+        return view('informe', ['productor'=>$productor, 'total'=>$total,'cedula'=>'0','precio'=>'0','msj'=>'NO HAY RECIBOS POR PAGAR', 'pago'=>'0','fecha'=>$fecha]); 
     }
     public function buscarrecibopago(Request $request)
     {
         $sql = "
-            SELECT COUNT(C.id) AS cp, C.tipo, SUM(P.carga) AS pcarga, SUM(P.peso) AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, SUM(P.descuento) AS pdescuento 
-            FROM pesaje P 
-            INNER JOIN precio B 
-            ON P.precio_id = B.id 
-            INNER JOIN productor R 
-            ON P.productor_id = R.id 
-            INNER JOIN banco C 
-            ON R.id = C.productor_id 
-            WHERE P.pago = 'SI' 
-            AND fecha='".$request->nombre."' 
-            GROUP BY C.id, B.precio 
-            ORDER BY B.precio ASC";  
+       SELECT P.id AS pid, C.id AS cp, C.tipo, P.carga AS pcarga, P.peso AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, P.descuento AS pdescuento 
+       FROM pesaje P 
+       INNER JOIN precio B 
+       ON P.precio_id = B.id 
+       INNER JOIN productor R 
+       ON P.productor_id = R.id 
+       INNER JOIN banco C ON R.id = C.productor_id 
+       WHERE P.pago = 'SI' AND fecha='".$request->nombre."'   
+       ORDER BY B.precio ASC";  
             
-        $sqltotal=" 
-            SELECT sum(peso) as peso, sum(carga) as carga, sum(descuento) as descuento, precio 
-            FROM pesaje 
-            INNER JOIN precio
-            ON pesaje.precio_id=precio.id 
-            WHERE pago='SI' 
-            AND fecha='".$request->nombre."' 
-            GROUP BY precio.id";
-            
-        $totales=DB::select($sqltotal);
-                
+        $fecha=date_create($request->nombre);
+        $fecha=$fecha->format('d-m-Y');
+         $productor=DB::select($sql);
+       
         $total=0;
-                
-        foreach($totales as $var)
+        foreach($productor as $var)
         {
-                $total=((($var->carga-$var->peso-$var->descuento)/1000)*$var->precio)+$total;
+            $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2))*$var->precio)+$total;
         }
         
         $productor=DB::select($sql);
             
-        return view('informe', ['productor'=>$productor, 'total'=>$total,'cedula'=>'0','precio'=>'0','msj'=>'NO HAY RECIBOS POR PAGAR', 'pago'=>'1', 'fecha'=>$request->nombre]);    
+        return view('informe', ['productor'=>$productor, 'total'=>$total,'cedula'=>'0','precio'=>'0','msj'=>'NO HAY RECIBOS POR PAGAR', 'pago'=>'1', 'fecha'=>$fecha]);   
     }
 }

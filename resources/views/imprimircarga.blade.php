@@ -29,6 +29,7 @@
  <font size=1>Cod Productor: <strong>{{$cod}}</strong></font><br>
   <font size=1>RIF Productor: <strong>{{$rif}}</strong></font><br>
   <font size=1>Productor: <strong>{{$nombre}}</strong></font><br>
+  <font size=1>Vehiculo: <strong>{{$modelo}}</strong></font><br>
    <font size=1>Placas: <strong>{{$placa}}</strong></font><br>
    <font size=1>Conductor: <strong>{{$chofer}}</strong></font><br>
    <font size=1>C.I. Conductor <strong>{{$cedula}}</strong></font><br>
@@ -38,7 +39,7 @@
   <font size=2>Peso Neto: <strong>{{truncateFloat(($carga-$peso-$descuento)/1000, 2)}} T</strong>  </font>  <br>
   
   <font size=2>Precio P/T: <strong>{{number_format($precio, 2,",",".")}} BsF</strong>  </font><br>
-     <font size=2><strong>TOTAL:  {{totalPrecio(($carga-$peso-$descuento)/1000, $precio,2)}} BsF.</strong></font><br> <br> <br>
+     <font size=2><strong>TOTAL:  {{totalPrecio(($carga-$peso-$descuento)/1000,$precio, 2)}} BsF.</strong></font><br> <br>
        <font size=2>Firma:_____________________________</font>
        <br> <br>
        <?php $fecha=date_create($fecha); ?>

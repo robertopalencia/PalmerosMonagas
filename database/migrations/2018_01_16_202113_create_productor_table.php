@@ -16,7 +16,7 @@ class CreateProductorTable extends Migration
         Schema::create('productor', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->integer('cedula');
+            $table->string('cedula');
             $table->string('rif');
             $table->string('finca');
             $table->string('direccion');

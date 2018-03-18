@@ -11,8 +11,8 @@ class BancoController extends Controller
 {
     
     
-    public function vistaagregar()
-    {
+    public function vistaagregar(Request $request)
+    { $request->user()->authorizeRoles(['admin']);
         return view ('agregarcuenta');    
     }
     
@@ -142,8 +142,9 @@ class BancoController extends Controller
         }
     }
     
-    public function tablabancos()
+    public function tablabancos(Request $request)
     {
+        $request->user()->authorizeRoles(['admin']);
         $banco= Banco::all();
         $productor=Productor::orderBy('nombre')->get();
         
@@ -195,8 +196,9 @@ class BancoController extends Controller
         return redirect('/banco');
     }
     
-    public function updateview($id)
-    {
+    public function updateview($id, Request $request)
+    {   
+        $request->user()->authorizeRoles(['admin']);
         $banco=Banco::findOrFail($id);
         $productorid=$banco->productor_id;
         $productor=Productor::findOrFail($productorid);

@@ -72,7 +72,9 @@
                 <th>Productor</th>
                 <th>Placa</th>
                 <th>Tara</th>
+                @if(Auth::user()->hasRole('admin'))
                 <th>Carga</th>
+                @endif
                 <th>Descuento</th>
                 @if(Auth::user()->hasRole('admin'))
                 <th>Monto</th>
@@ -91,11 +93,13 @@
                    
                    
                     <td class="table-text"><div> {{number_format($control->peso, 0, ",",".")}}Kg </div></td>
-                    
-                    <td class="table-text"><div> {{number_format($control->carga-$control->peso-$control->descuento, 0,",",".")}}Kg </div></td>
+                    @if(Auth::user()->hasRole('admin'))
+                    <td class="table-text"><div> {{number_format($control->carga-$control->peso-$control->descuento, 0,",",".")}}Kg </div>
+                    </td>
+                    @endif
                    <td class="table-text"><div> {{number_format($control->descuento, 0, ",",".")}}Kg </div></td>
                     @if(Auth::user()->hasRole('admin')) 
-                    <td class="table-text"><div> {{number_format((($control->carga-$control->peso-$control->descuento)/1000)*$control->precio, 2,",",".")}} BsF 
+                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)/1000), $control->precio, 2)}} BsF 
                     </div>
                     </td>
                     @endif
@@ -128,6 +132,9 @@
                 <input type="hidden" name="id" class="form-control" value="{{$control->pid}}">
                 <input type="hidden" name="entrada" class="form-control" value="{{$control->entrada}}">
                 <input type="hidden" name="salida" class="form-control" value="{{$control->salida}}">
+                <input type="hidden" name="modelo" class="form-control" value="{{$control->modelo}}">
+                <input type="hidden" name="marca" class="form-control" value="{{$control->marca}}">
+                <input type="hidden" name="ano" class="form-control" value="{{$control->ano}}">
                 <button type="submit" class='btn btn-xs'>
                     <i class="fa fa-print btn-xs"></i>  
                 </button>
@@ -138,13 +145,14 @@
                 </tr>
                 
                 @endforeach
-               
+                  @if(Auth::user()->hasRole('admin'))
                 <tr>
                  <td class="table-text"><div></div></td>
                     <td class="table-text"><div> </div></td>
-                    <td class="table-text"><div> </div></td>
-                    <td class="table-text"><div> </div></td>
-                    @if(Auth::user()->hasRole('admin'))
+                     @if(Auth::user()->hasRole('admin'))
+                    <td class="table-text"><div><h4><strong>Total</strong></h4></div></td>
+                    <td class="table-text"><div><h4><strong>{{number_format($totalcarga, 2, ",",".")}} TON</strong></h4></div></td>
+                   
                     <td class="table-text"><div><h4><strong> Monto Total</strong> </h4></div></td>
                     <td class="table-text"><div><h4><strong> {{number_format($total, 2, ",",".")}}BsF</strong> </h4></div>
                     </td>
@@ -152,6 +160,22 @@
                     <td class="table-text"><div><h4><strong> </strong></h4></div></td>
                     <td class="table-text"><div> </div></td>
                     </tr>
+                
+                     <tr>
+                 <td class="table-text"><div></div></td>
+                    <td class="table-text"><div> </div></td>
+                     
+                    <td class="table-text"><div><h4><strong>Monagas</strong></h4></div></td>
+                    <td class="table-text"><div><h4><strong>{{number_format($monagas, 0, ",",".")}}Kg</strong></h4></div></td>
+                   
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div>
+                    </td>
+                   
+                    <td class="table-text"><div><h4><strong> </strong></h4></div></td>
+                    <td class="table-text"><div> </div></td>
+                    </tr>
+                     @endif
             </tbody>
         </table>
         <strong>Nota:</strong> La impresión, son nota de entrega. <br><strong>Al agregar descuento, recargar con F5.</strong>

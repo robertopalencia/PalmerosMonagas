@@ -65,13 +65,15 @@ class MainController extends BaseController
       
     }
     
-    public function precio()
+    public function precio(Request $request)
     {
+        $request->user()->authorizeRoles(['admin']);
         return view ('precio'); 
     }
      
-    public function register()
-    {
+    public function register(Request $request)
+    {  
+        $request->user()->authorizeRoles(['admin']);
         return view('auth.register');
     }
 }

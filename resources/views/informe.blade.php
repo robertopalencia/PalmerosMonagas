@@ -10,7 +10,7 @@
     
      @if($pago==0)
     <div class="panel panel-default">
-        <div class="panel-heading"><strong>INFORME DE RECIBOS POR PAGAR</strong></div>
+        <div class="panel-heading"><strong>INFORME DE NOTAS DE ENTREGAS POR PAGAR</strong></div>
     <div class="panel-body">
       @endif
       @if($pago==1)
@@ -42,37 +42,31 @@
    
     <input type="date"  name="nombre" class="form-control">
 </div>
-</form>    
+</form>     <br><br><br>
     @if(count($productor)==0)
         <div class="col-xs-11">
-<div class="alert alert-danger" role="alert"><strong>{{$msj}}</strong></div></div>
+<div class="alert alert-danger" role="alert"><strong>{{$msj}}</strong></div></div><br><br><br>
 @endif
-   
+  <h3><strong>{{$fecha}}</strong></h3>
        @if (count($productor)>0)
+       
         <table class="table table-striped task-table">
+           
             <thead>
+                 <th>Nº</th>
                 <th>Nombre</th>
                 <th>C.I. o RIF</th>
                 <th>Banco</th>
                 <th>Tipo</th>
                 <th>Cuenta Bancaria</th>
                 <th>Carga</th>
-                <th>Monto Total C/P</th>
+                <th>Monto Total</th>
                 
             </thead>
             <tbody> 
                 @foreach($productor as $var)
-                 <?php
-                if($precio!=$var->precio){
-                    $precio=$var->precio;
-                    $cedula=0;
-                }?>
-               @if($cedula!=$var->cedula)
-               <?php $cedula=$var->cedula;
-               
-                ?>
-               
                 <tr>
+                  <td class="table-text"><div align="center"> {{$var->pid}} </div></td>
                    @if($var->tipo=='Juridico')
                     <td class="table-text"><div> {{$var->finca}} </div></td>
                     @else
@@ -87,23 +81,24 @@
                       <td class="table-text"><div> {{$var->tipocuenta}} </div></td>
                     <td class="table-text"><div> {{$var->cuenta}} </div></td>
                    
-                    <td class="table-text"><div> {{number_format(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2,",",".")}} </div></td>
+                    <td class="table-text"><div>{{neto($var->pcarga/1000,$var->ppeso/1000,$var->pdescuento/1000,2)}}</div></td>
                    
-                    <td class="table-text"><div> {{number_format((($var->pcarga-$var->ppeso-$var->pdescuento)/1000)*$var->precio, 2, ",",".")}} </div></td>
+                    <td class="table-text"><div> {{totalPrecio(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, $var->precio,2)}}  </div></td>
                    
                      
                 </tr>
-                @endif
+                
                 @endforeach
                
                 <tr>
-                 <td class="table-text"><div></div></td>
-                    <td class="table-text"><div> </div></td>
-                    <td class="table-text"><div> </div></td>
-                    <td class="table-text"><div> </div></td>
-                    <td class="table-text"><div> </div></td>
-                    <td class="table-text"><div><h4><strong>Monto Total</strong> </h4></div></td>
-                    <td class="table-text"><div><h4><strong>  {{number_format($total, 2, ",",".")}}</strong></h4></div></td>
+                   <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div align="right"><h4><strong>Monto</strong></h4> </div></td>
+                    <td class="table-text"><div><h4><strong>Total</strong> </h4></div></td>
+                    <td class="table-text"><div><h4><strong>{{number_format($total, 2, ",",".")}}</strong></h4></div></td>
                     <td class="table-text"><div> </div></td>
                     </tr>
             </tbody>

@@ -17,7 +17,7 @@
     
 
     <div>
-        <div align="center"><h1><strong>INFORME DE RECIBOS PAGADOS</strong></h1></div>
+        <div align="justify"><h1><strong>INFORME DE NOTAS DE ENTREGA PAGADAS</strong></h1></div>
     <div>
       <br>
        
@@ -26,6 +26,7 @@
         <table width="100%" border="1" align="center"  bordercolor="#000000">
             <thead align="center">
                 <tr>
+                <th>Nº</th>
                 <th>Nombre</th>
                 <th>C.I. o RIF</th>
                 <th>Banco</th>
@@ -35,21 +36,11 @@
                 <th>Monto</th>
                 </tr>
             </thead>
-            <tbody> 
+           <tbody> 
                 @foreach($productor as $var)
-                 <?php
-                if($precio!=$var->precio){
-                    $precio=$var->precio;
-                    $cedula=0;
-                }?>
-               @if($cedula!=$var->cedula)
-               <?php $cedula=$var->cedula;
-               
-                ?>
-               
                 <tr>
-                   
-                    @if($var->tipo=='Juridico')
+                  <td class="table-text"><div align="center"> {{$var->pid}} </div></td>
+                   @if($var->tipo=='Juridico')
                     <td class="table-text"><div> {{$var->finca}} </div></td>
                     @else
                     <td class="table-text"><div> {{$var->nombre}} </div></td>
@@ -59,29 +50,33 @@
                     @else
                     <td class="table-text"><div> {{$var->cedula}} </div></td>
                     @endif
-                    <td><div> {{$var->banco}} </div></td>
-                    <td><div> {{$var->tipocuenta}} </div></td>
-                    <td><div> {{$var->cuenta}} </div></td>
-                    <td><div> {{number_format(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2,",",".")}} </div></td>
-                    <td><div> {{number_format((($var->pcarga-$var->ppeso-$var->pdescuento)/1000)*$var->precio, 2, ",",".")}} </div></td>
+                     <td class="table-text"><div> {{$var->banco}} </div></td>
+                      <td class="table-text"><div> {{$var->tipocuenta}} </div></td>
+                    <td class="table-text"><div> {{$var->cuenta}} </div></td>
+                   
+                    <td class="table-text"><div>{{neto($var->pcarga/1000,$var->ppeso/1000,$var->pdescuento/1000,2)}}</div></td>
+                   
+                    <td class="table-text"><div> {{totalPrecio(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, $var->precio,2)}}  </div></td>
                    
                      
                 </tr>
-                @endif
+                
                 @endforeach
                
                 <tr>
-                 <td><div></div></td>
-                    <td><div> </div></td>
-                    <td><div> </div></td>
-                    <td><div> </div></td>
-                    <td class="2"><div align="right"><h2><strong>Monto</strong></h2>  </div></td>
-                    <td class="3"><div><h2><strong>Total</strong> </h2></div></td>
-                    <td><div><h4><strong>  {{number_format($total, 2, ",",".")}}</strong></h4></div></td>
-                
+                   <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"><div></div></td>
+                    <td class="table-text"colspan="2"><div align="center"><h4><strong>Monto Total</strong></h4> </div></td>
+                    
+                    <td class="table-text" ><div><h4><strong>{{number_format($total, 2, ",",".")}}</strong></h4>
+                    
                     </tr>
             </tbody>
         </table>
+        
         
        
         

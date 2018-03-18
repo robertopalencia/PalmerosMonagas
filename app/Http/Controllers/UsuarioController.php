@@ -18,7 +18,7 @@ class UsuarioController extends Controller
 {
     
       public function listadousers()
-    {
+    { $request->user()->authorizeRoles(['admin']);
         return view ('users');    
     }
      

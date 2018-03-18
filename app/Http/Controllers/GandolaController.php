@@ -33,8 +33,9 @@ class GandolaController extends Controller
                 }
     }
     
-     public function vistaagregar()
-    {
+     public function vistaagregar(Request $request)
+    { 
+         $request->user()->authorizeRoles(['admin','user']);
         return view ('agregargandola');    
     }
     public function gandolas()
@@ -81,6 +82,7 @@ class GandolaController extends Controller
                 'placa'=>'required | min:6|max:8|unique:gandola|unique:camion',
                 'peso'=>'required |max:10',
                 'cedula'=>'required |min:6|max:9|unique:gandola|unique:camion|unique:productor',
+                'nacionalidad'=>'required',
                 'telefono'=>'required |max:14|unique:gandola|unique:camion|unique:productor',
                 'marca'=>'required |max:20',
                 'modelo'=>'required |max:20',
@@ -113,7 +115,7 @@ class GandolaController extends Controller
         
                 foreach ($gandolabd as $gandolas) 
                 {
-                    if ($request->cedula==$gandolas->cedula)
+                    if ($request->nacionalidad."".$request->cedula==$gandolas->cedula)
                     {
                         $cedula=1;
                     }
@@ -125,7 +127,7 @@ class GandolaController extends Controller
                     $gandola->chofer = $request ->chofer;
                     $gandola->placa = $request ->placa;
                     $gandola->peso = $request ->peso;
-                    $gandola->cedula = $request ->cedula;
+                    $gandola->cedula = $request->nacionalidad."".$request->cedula;
                     $gandola->telefono = $request ->telefono;
                     $gandola->modelo = $request ->modelo;
                     $gandola->ano = $request ->ano;
@@ -209,14 +211,14 @@ class GandolaController extends Controller
         
     return redirect('/tablagandolas');
     }
-    public function viewupdate($id)
-    {
+    public function viewupdate($id, Request $request)
+    {       $request->user()->authorizeRoles(['admin']);
             $Gandola=Gandola::findOrFail($id);
             return view('editargandolas', ['gandola'=>$Gandola]);
     }
     
-    public function pesos($id)
-    {
+    public function pesos($id, Request $request)
+    {       $request->user()->authorizeRoles(['admin']);
             $Gandola=Cargagandola::findOrFail($id);
             return view('pesos', ['gandola'=>$Gandola]);
     }
@@ -230,8 +232,9 @@ class GandolaController extends Controller
          return redirect('/gandolas');
     }
     
-       public function ubicacion($id)
-    {
+       public function ubicacion($id, Request $request)
+    {       
+           $request->user()->authorizeRoles(['admin']);
             $Gandola=Control::findOrFail($id);
             return view('ubicacion', ['gandola'=>$Gandola]);
     }

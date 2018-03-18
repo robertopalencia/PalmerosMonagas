@@ -23,7 +23,7 @@ class CreateGandolaTable extends Migration
             $table->string('color');
             $table->integer('ano');
             $table->string('chofer');
-            $table->integer('cedula');
+            $table->string('cedula');
             $table->integer('peso');
             $table->string('telefono');
         });

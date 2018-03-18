@@ -49,12 +49,14 @@ class VehiculoController extends Controller
     }
     public function agregarcamion(Request $request) 
     {
+        
       $validator = Validator::make($request->all(),
             [
                 'nombre'=>'required |max:70',
                 'placa'=>'required | min:6|max:8|unique:camion|unique:gandola',
                 'peso'=>'required |max:10',
-                'cedula'=>'required |min:6|max:9',
+                'cedula'=>'required |min:6|max:9|unique:gandola',
+                'nacionalidad'=>'required',
                 'marca'=>'required |max:20',
                 'modelo'=>'required |max:20',
                 'color'=>'required |max:20',
@@ -86,7 +88,7 @@ class VehiculoController extends Controller
         
                 foreach ($camionbd as $camiones) 
                 {
-                    if ($request->cedula==$camiones->cedula)
+                    if ($request->nacionalidad."".$request->cedula==$camiones->cedula)
                     {
                         $cedula=1;
                     }
@@ -98,7 +100,7 @@ class VehiculoController extends Controller
                     $camion->nombre = $request ->nombre;
                     $camion->placa = $request ->placa;
                     $camion->peso = $request ->peso;
-                    $camion->cedula = $request ->cedula;
+                    $camion->cedula = $request->nacionalidad."".$request ->cedula;
                     $camion->telefono = $request ->telefono;
                     $camion->modelo = $request ->modelo;
                     $camion->ano = $request ->ano;
@@ -195,8 +197,9 @@ class VehiculoController extends Controller
     return redirect('/tablacamiones');
     }
     
-    public function viewupdate($id)
+    public function viewupdate($id, Request $request)
     {
+        $request->user()->authorizeRoles(['admin']);
             $camion=Camion::findOrFail($id);
             return view('editarcamiones', ['camion'=>$camion]);
     }

@@ -20,10 +20,10 @@
             <thead>
                 
                 <th>Placa</th>
-                <th>Receptoria (Kg)</th>
-                <th>Monagas (Kg)</th>
-                <th>Diferencia (Kg)</th>
-                <th>Zulia (Kg)</th>
+                <th>Receptoria</th>
+                <th>Monagas</th>
+                <th>Diferencia</th>
+                <th>Zulia</th>
                 <th>Merma</th>
                 <th>Fecha</th>
                 <th>Ubicación</th>
@@ -36,11 +36,11 @@
                    <?php $anterior=$gandola->cid; ?>
                    
                     <td class="table-text"><div> {{$gandola->placa}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_neto}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_real}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_neto}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_mermado}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_mermado}} </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_neto}}Kg </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real}}Kg </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_neto}}Kg </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_mermado}}Kg </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_mermado}}Kg </div></td>
                     
                     <td class="table-text"><div> {{$gandola->fecha}} </div></td>
                     <td class="table-text"><div> {{$gandola->ubicacion}} </div></td>

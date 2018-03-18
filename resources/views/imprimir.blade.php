@@ -16,12 +16,12 @@
      
         <font size=1><strong>Productor: {{$productorfinca}}</strong></font> <br>
         <font size=1><strong>RIF:</strong>{{$productorrif}} </font><br>
-        <font size=1><strong>Codigo Productor:</strong>{{$productorid}}</font> <br>
+        <font size=1><strong>Codigo Productor:</strong>{{$cod}}</font> <br>
         <font size=1><strong>Representante: {{$productornombre}}</strong></font> <br>
         <font size=1><strong>C.I.:</strong>{{$productorcedula}}</font> <br>
         <font size=1><strong>Email: </strong>{{$productorcorreo}}</font>
        </div>
-    <title>strong>RECIBO </strong></title>
+    <title><strong>RECIBO </strong></title>
 </head>
 <body>
    
@@ -44,7 +44,7 @@
                    <?php $fecha2=date_create($pesajes->fecha); ?>
                     <td align="center"> <font size=1>{{date_format($fecha2, 'd-m-Y')}}</font> </td>
                     <td align="center"> <font size=1>{{$pesajes->id}} <strong></font></strong> </td>
-                    <td align="center"><font size=1>{{number_format((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio, 2, ",",".")}}</font></td>
+                    <td align="center"><font size=1>{{totalPrecio((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000),$pesajes->precio, 2)}}</font></td>
                    
                 </tr>
                 
@@ -59,7 +59,7 @@
             </tbody>
     </table>   
 <font size=1>
-    <p align="justify">Recibí de Asociación Cooperativa Agropecuaria Bejuma RL <strong></strong> la cantidad de {{number_format($total, 2, ",",".")}} Bs.F por concepto de: <strong>Pago de {{number_format($totalt, 3, ",",".")}} Toneladas de Fruta fresca de palma aceitera</strong></p></font>
+    <p align="justify">Recibí de Asociación Cooperativa Agropecuaria Bejuma RL <strong></strong> la cantidad de {{number_format($total, 2, ",",".")}} Bs.F por concepto de: <strong>Pago de {{number_format($totalt, 2, ",",".")}} Toneladas de Fruta fresca de palma aceitera</strong></p></font>
        
        <br><br>
         <font size=1><strong>Recibí Conforme:____________________ <br> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C.I: ____________________ </strong></font>

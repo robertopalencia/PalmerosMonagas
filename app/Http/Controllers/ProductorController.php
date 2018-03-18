@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Validator;
 class ProductorController extends Controller
 {
     
-    public function vistaagregar()
+    public function vistaagregar(Request $request)
+        
     {
+        $request->user()->authorizeRoles(['admin','user']);
         return view ('proagregar');    
     }
     
@@ -52,8 +54,10 @@ class ProductorController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'nombre'=>'required |min:8|max:70',
-                'cedula'=>'required |min:100000|max:200000000|numeric',
+                'cedula'=>'required |min:100000|max:200000000|numeric|unique:gandola',
+                'nacionalidad'=>'required',
                 'rif'=>'required |min:7|max:15',
+                'letra'=>'required',
                 'finca'=>'required | max:70',
                 'direccion'=>'required |max:70',
                 'cuenta'=>'required |digits:20|numeric|unique:banco',
@@ -63,6 +67,7 @@ class ProductorController extends Controller
                 'localidad'=>'required |min:1',
                 'tipo'=>'required',
                 'tipocuenta'=>'required',
+                
         
                 
             ]);
@@ -78,7 +83,7 @@ class ProductorController extends Controller
                 $cedula=0;
                   foreach ($productorbd as $productores) {
                    
-                    if ($request->cedula==$productores->cedula){
+                    if ($request->nacionalidad."".$request->cedula==$productores->cedula){
                         $cedula=1;
                     }
                   }
@@ -86,7 +91,7 @@ class ProductorController extends Controller
                 
                 foreach ($productorbd as $productores2) {
                     
-                    if ($request->rif==$productores2->rif){
+                    if (($request->letra."".$request->rif)==$productores2->rif){
                         $rif=1;
                     }
                   }
@@ -102,8 +107,8 @@ class ProductorController extends Controller
             
             $productor=new Productor;
             $productor->nombre = $request ->nombre;
-            $productor->cedula = $request ->cedula;
-            $productor->rif= $request ->rif;
+            $productor->cedula = $request->nacionalidad."".$request ->cedula;
+            $productor->rif= $request->letra."".$request->rif;
             $productor->finca = $request ->finca;
             $productor->direccion = $request->localidad.", ".$request ->direccion;
             $productor->correo = $request ->correo;
@@ -250,11 +255,11 @@ class ProductorController extends Controller
                     if($cedula==1){
                         if($rif==1){
                             if($cuenta==1) {
-                                 return back()->with('msj2', 'La Cuenta Bancaria Nº: '.$request->cuenta.', la Cedula de Identidad: '.$request->cedula." y el RIF: ".$request->rif." YA EXISTEN");
+                                 return back()->with('msj2', 'La Cuenta Bancaria Nº: '.$request->cuenta.', la Cedula de Identidad: '.$request->cedula." y el RIF: ".$request->letra."".$request->rif." YA EXISTEN");
                             }
                             else {
                                 
-                            return back()->with('msj2', 'El RIF: '.$request->rif.' y la Cedula de Identidad: '.$request->cedula.", YA EXISTEN");
+                            return back()->with('msj2', 'El RIF: '.$request->letra."".$request->rif.' y la Cedula de Identidad: '.$request->cedula.", YA EXISTEN");
                             }
                         }
                         else{
@@ -269,14 +274,14 @@ class ProductorController extends Controller
                     }
                     else {
                         if($cuenta==1 && $rif==1){
-                            return back()->with('msj2', 'La Cuenta Bancaria Nº '.$request->cuenta.' y el RIF: '.$request->rif.", YA EXISTEN");
+                            return back()->with('msj2', 'La Cuenta Bancaria Nº '.$request->cuenta.' y el RIF: '.$request->letra."".$request->rif.", YA EXISTEN");
                         }
                         else { if($cuenta == 1){
                             return back()->with('msj2', 'La Cuenta Bancaria Nº: '.$request->cuenta.", YA EXISTE"); 
                             
                         }
                               else {
-                                  return back()->with('msj2', 'El RIF: '.$request->rif.", YA EXISTE"); 
+                                  return back()->with('msj2', 'El RIF: '.$request->letra."".$request->rif.", YA EXISTE"); 
                               }
                             
                         } 
@@ -302,8 +307,8 @@ class ProductorController extends Controller
     Productor::findOrFail($id)->delete();
     return redirect('tablaproductores');
     }
-    public function viewupdate($id) 
-    {
+    public function viewupdate($id, Request $request) 
+    { $request->user()->authorizeRoles(['admin']);
          $productor=Productor::findOrFail($id);
             return view('editarproductores', ['productor'=>$productor]);
     }

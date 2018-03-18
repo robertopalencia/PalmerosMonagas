@@ -8,9 +8,12 @@
         {{session('msj')}}
          
 </div>
+Nota: En caso de que esta carga no sea de hoy, regrese una pagina con el navegador y recargue con F5
+<br><br>
 <button type="submit" class="btn btn-success btn" onclick="location.href='/control';">
                          <i class="fa fa-arrow-left" ></i> ATRAS
                     </button> <br> <br>
+
 @endif
 <form action="{{url('editarpesocamion')}}/{{$peso->id}}" method="POST">
 {{csrf_field()}}

@@ -63,9 +63,9 @@
                 <tr>
                    <?php $fecha=date_create($pesajes->fecha)?>
                     <td class="table-text"><div> {{date_format($fecha, "d-m-Y")}} </div></td>
-                    <td class="table-text"><div> {{number_format(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000, 3,",",".")}} </div></td>
+                    <td class="table-text"><div> {{neto($pesajes->carga/1000,$pesajes->peso/1000,$pesajes->descuento/1000, 2)}} </div></td>
                     <td class="table-text"><div> {{$pesajes->descripcion}} </div></td>
-                    <td class="table-text"><div> {{number_format((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000)*$pesajes->precio, 2, ",",".")}} </div></td>
+                    <td class="table-text"><div> {{totalPrecio((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000),$pesajes->precio, 2)}} </div></td>
                    
                      <td>
                      
