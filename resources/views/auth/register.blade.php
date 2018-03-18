@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-@if(Auth::check())
+@/if(Auth::check())
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -61,6 +61,29 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="tipo" class="col-md-4 control-label">Tipo de Usuario</label>
+                               <div class="col-md-6">
+                            <select name="tipo" class="form-control" required>
+                              <option value="{{ old('tipo') }}">{{ old('tipo') }}</option>
+                              @if(old('tipo')=='Observador')
+                              <option value="Administrador">Administrador</option>
+                              <option value="Usuario">Usuario</option>
+                              @elseif(old('tipo')=='Administrador')
+                                <option value="Observador">Observador</option>
+                                <option value="Usuario">Usuario</option>
+                              @elseif(old('tipo')=='Usuario')
+                                <option value="Administrador">Administrador</option>
+                                <option value="Observador">Observador</option>
+                             @else
+                             <option value="Administrador">Administrador</option>
+                             <option value="Observador">Observador</option>
+                             <option value="Usuario">Usuario</option>
+                             @endif
+                            </select> 
+                             </div>
+                        </div>
+
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
@@ -75,5 +98,5 @@
         </div>
     </div>
 </div>
-@endif
+@/endif
 @endsection

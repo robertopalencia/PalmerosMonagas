@@ -78,10 +78,15 @@ class GandolaController extends Controller
       $validator = Validator::make($request->all(),
             [
                 'chofer'=>'required |max:70',
-                'placa'=>'required | min:6|max:8',
+                'placa'=>'required | min:6|max:8|unique:gandola|unique:camion',
                 'peso'=>'required |max:10',
-                'cedula'=>'required |min:6|max:9',
-                'telefono'=>'required |max:14|unique:gandola',
+                'cedula'=>'required |min:6|max:9|unique:gandola|unique:camion|unique:productor',
+                'telefono'=>'required |max:14|unique:gandola|unique:camion|unique:productor',
+                'marca'=>'required |max:20',
+                'modelo'=>'required |max:20',
+                'ano'=>'required |min:2|max:4',
+                'color'=>'required |max:20',
+                'placaremolque'=>'required |min:6|max:8|unique:gandola'
                 
             ]);
         
@@ -122,7 +127,12 @@ class GandolaController extends Controller
                     $gandola->peso = $request ->peso;
                     $gandola->cedula = $request ->cedula;
                     $gandola->telefono = $request ->telefono;
-                    
+                    $gandola->modelo = $request ->modelo;
+                    $gandola->ano = $request ->ano;
+                    $gandola->marca = $request ->marca;
+                    $gandola->color = $request ->color;
+                    $gandola->placaremolque = $request->placaremolque;
+                 
                     if($gandola->save())
                     
                     {
@@ -166,10 +176,15 @@ class GandolaController extends Controller
          $validator = Validator::make($request->all(),
             [
                 'chofer'=>'required |max:70',
-                'placa'=>'required | min:6',
-                'peso'=>'required |max:70',
-                'cedula'=>'required |min:7',
+                'placa'=>'required | min:6|max:8',
+                'peso'=>'required |max:10',
+                'cedula'=>'required |min:6|max:9',
                 'telefono'=>'required |max:14',
+                'marca'=>'required |max:20',
+                'modelo'=>'required |max:20',
+                'ano'=>'required |min:2|max:4',
+                'placaremolque'=>'required |min:6|max:8',
+                'color'=>'required |max:20',
                 
                 
             ]);
@@ -185,6 +200,11 @@ class GandolaController extends Controller
             $gandola->peso = $request ->peso;
             $gandola->cedula = $request ->cedula;
             $gandola->telefono = $request ->telefono;
+            $gandola->modelo = $request ->modelo;
+            $gandola->ano = $request ->ano;
+            $gandola->marca = $request ->marca;
+            $gandola->color = $request ->color;
+            $gandola->placaremolque = $request->placaremolque;
             $gandola->save();
         
     return redirect('/tablagandolas');

@@ -25,7 +25,35 @@
        <button type="submit" class='btn btn-info'><i class="fa fa-search"></i> BUSCAR</button>
     
 </div>
-</form>    
+</form>
+  @if (count($gandolas)>1)
+   <form action="{{url('buscarcontrolfechagandola')}}" method="POST" class="navbar-form navbar-left pull-right">
+{{csrf_field()}}
+<div class="form-group">
+   
+    <input type="hidden"  name="fecha" class="form-control" value="{{$fecha2}}">
+</div>
+<div class="form-group">
+     <label for="id" class="control-label">Gandolas</label>
+    <select name="id" class="form-control" required>
+    <option value=""></option>
+    <?php $id=0; ?>
+     @foreach($gandolas as $gandola)
+      @if($id!=$gandola->cargagandola_id)
+      <?php $id=$gandola->cargagandola_id;?>
+       <option value="{{$gandola->cargagandola_id}}">{{$gandola->placa}}</option>
+       @endif
+   @endforeach
+    </select> 
+</div>
+
+
+<div class="form-group">
+       <button type="submit" class='btn btn-info'><i class="fa fa-search"></i> FILTRO</button>
+    
+</div>
+</form>   
+   @endif   
     @if(count($controles)==0)
         <div class="col-xs-11">
 <div class="alert alert-danger" role="alert"><strong>{{$msj}}</strong></div></div> <br> <br> <br>
@@ -46,8 +74,10 @@
                 <th>Tara</th>
                 <th>Carga</th>
                 <th>Descuento</th>
+                @if(Auth::user()->hasRole('admin'))
                 <th>Monto</th>
-                
+                @endif
+                <th>Acciones</th>
                 
             </thead>
             <tbody> 
@@ -64,24 +94,26 @@
                     
                     <td class="table-text"><div> {{number_format($control->carga-$control->peso-$control->descuento, 0,",",".")}}Kg </div></td>
                    <td class="table-text"><div> {{number_format($control->descuento, 0, ",",".")}}Kg </div></td>
-                     <td class="table-text"><div> {{number_format((($control->carga-$control->peso-$control->descuento)/1000)*$control->precio, 2,",",".")}} BsF </div></td>
+                    @if(Auth::user()->hasRole('admin')) 
+                    <td class="table-text"><div> {{number_format((($control->carga-$control->peso-$control->descuento)/1000)*$control->precio, 2,",",".")}} BsF 
+                    </div>
+                    </td>
+                    @endif
                      <td>
                      
-                       <button type="submit" class="btn btn-success btn-xs" onclick="location.href='editarpesorecibo/{{$control->pid}}';">
+                       <button type="submit" class="btn btn-success btn-xs" onclick="location.href='editarpesorecibo/{{$control->pid}}';" style="Float:left">
                          Descuento
                     </button>
                    
-                    </td>
-                     <td>
+                    
                      
-                       <button type="submit" class="btn btn-success btn-xs" onclick="location.href='editarpesocamion/{{$control->pid}}';">
+                     
+                       <button type="submit" class="btn btn-info btn-xs" onclick="location.href='editarpesocamion/{{$control->pid}}';" style="Float:left">
                          Tara
                     </button>
                    
-                    </td>
                     
-                    <td>
-                        <form action="{{url('pdfcarga')}}" method="POST" class="navbar-form navbar-left">
+                        <form action="{{url('pdfcarga')}}" method="POST" class="navbar-form navbar-left" style="Float:left">
 {{csrf_field()}}
                 <input type="hidden" name="peso" class="form-control" value="{{$control->peso}}">
                 <input type="hidden" name="carga" class="form-control" value="{{$control->carga}}">
@@ -89,7 +121,7 @@
                 <input type="hidden" name="precio" class="form-control" value="{{$control->precio}}">
                 <input type="hidden" name="rif" class="form-control" value="{{$control->rif}}">
                 <input type="hidden" name="nombre" class="form-control" value="{{$control->finca}}">
-                <input type="hidden" name="cod" class="form-control" value="{{$control->poid}}">
+                <input type="hidden" name="cod" class="form-control" value="{{$control->cod}}">
                 <input type="hidden" name="chofer" class="form-control" value="{{$control->nombre}}">
                 <input type="hidden" name="cedula" class="form-control" value="{{$control->cedula}}">
                 <input type="hidden" name="placa" class="form-control" value="{{$control->placa}}">
@@ -112,8 +144,11 @@
                     <td class="table-text"><div> </div></td>
                     <td class="table-text"><div> </div></td>
                     <td class="table-text"><div> </div></td>
+                    @if(Auth::user()->hasRole('admin'))
                     <td class="table-text"><div><h4><strong> Monto Total</strong> </h4></div></td>
-                    <td class="table-text"><div><h4><strong> {{number_format($total, 2, ",",".")}}BsF</strong> </h4></div></td>
+                    <td class="table-text"><div><h4><strong> {{number_format($total, 2, ",",".")}}BsF</strong> </h4></div>
+                    </td>
+                    @endif
                     <td class="table-text"><div><h4><strong> </strong></h4></div></td>
                     <td class="table-text"><div> </div></td>
                     </tr>

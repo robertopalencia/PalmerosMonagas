@@ -60,6 +60,7 @@ class ProductorController extends Controller
                 'banco'=>'required |max:50',
                 'correo'=>'required |max:70 |email|unique:productor',
                 'telefono'=>'required |max:14|unique:productor',
+                'localidad'=>'required |min:1',
                 'tipo'=>'required',
                 'tipocuenta'=>'required',
         
@@ -104,10 +105,126 @@ class ProductorController extends Controller
             $productor->cedula = $request ->cedula;
             $productor->rif= $request ->rif;
             $productor->finca = $request ->finca;
-            $productor->direccion = $request ->direccion;
+            $productor->direccion = $request->localidad.", ".$request ->direccion;
             $productor->correo = $request ->correo;
             $productor->telefono = $request ->telefono;
-                        
+                    $productor_id= Productor::all();
+                    var_dump($productor_id->last());
+                    $idcodigo=0;
+                    foreach ($productor_id as $id)
+                    {
+                        $idcodigo=$id->id;
+                    }
+            if ($request->localidad=='La Hormiga')
+            {   if ($idcodigo<9){
+                $productor->cod='PH00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PH0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PH'.($idcodigo+1);
+             }
+            }
+            else if ($request->localidad=='Vuelta Larga')
+            {   if ($idcodigo<9){
+                $productor->cod='PVL00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PVL0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PVL'.($idcodigo+1);
+             }
+            } 
+            else if ($request->localidad=='El Zamuro')
+            {   if ($idcodigo<9){
+                $productor->cod='PZ00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PZ0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PZ'.($idcodigo+1);
+             }
+            } 
+             else if ($request->localidad=='Cachipo')
+            {   if ($idcodigo<9){
+                $productor->cod='PC00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PC0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PC'.($idcodigo+1);
+             }
+            }
+            else if ($request->localidad=='Aguila')
+            {   if ($idcodigo<9){
+                $productor->cod='PA00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PA0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PA'.($idcodigo+1);
+             }
+            }
+            else if ($request->localidad=='Vivoral')
+            {   if ($idcodigo<9){
+                $productor->cod='PV00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PV0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PV'.($idcodigo+1);
+             }
+            }
+            else if ($request->localidad=='Caripito')
+            {   if ($idcodigo<9){
+                $productor->cod='PCR00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PCR0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PCR'.($idcodigo+1);
+             }
+            }
+            else if ($request->localidad=='Pica June')
+            {   if ($idcodigo<9){
+                $productor->cod='PPJ00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PPJ0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PPJ'.($idcodigo+1);
+             }
+            }
+             else if ($request->localidad=='San Augustin')
+            {   if ($idcodigo<9){
+                $productor->cod='PSA00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PSA0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PSA'.($idcodigo+1);
+             }
+            }
+            else if ($request->localidad=='El Barril')
+            {   if ($idcodigo<9){
+                $productor->cod='PEB00'.($idcodigo+1);
+                }
+                else if($idcodigo>8&&$idcodigo<99) {
+                 $productor->cod='PEB0'.($idcodigo+1);
+             }
+                else if ($idcodigo>98){
+                 $productor->cod='PEB'.($idcodigo+1);
+             }
+            }
             if($productor->save()){
                  $productorid=DB::select('SELECT id from productor');
                 $id=0;

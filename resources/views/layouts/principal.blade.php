@@ -72,35 +72,47 @@
                         <li>
                             <a href="#"><i class="fa fa-bar-chart fa-fw"></i> Pesaje<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                               @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                                 <li>
                                     <a href="/pagregar"><i class='fa fa-keyboard-o fa-fw'></i> Cargar</a>
                                 </li>
+                                @endif
                                 <li>
                                     <a href="/cupos"><i class='fa fa-bookmark fa-fw'></i> Cupos</a>
                                 </li>
+                                @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('watcher'))
                                  <li>
                                     <a href="/gandolas"><i class='fa fa-book fa-fw'></i> Seguimiento</a>
                                 </li>
+                                @endif
+                                @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                                 <li>
                                     <a href="/control"><i class='fa fa-book fa-fw'></i> Control</a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
+                       
                         <li>
+                           
                             <a href="#"><i class="fa fa-book fa-fw"></i> Productor<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                                 <li>
                                     <a href="/proagregar"><i class='fa fa-plus fa-fw'></i> Agregar</a>
                                 </li>
+                                 @endif
                                 <li>
                                     <a href="/tablaproductores"><i class='fa fa-list-ol fa-fw'></i> Productores</a>
                                 </li>
+                                @if(Auth::user()->hasRole('admin'))
                                 <li>
                                     <a href="/banco"><i class='fa fa-bank fa-fw'></i> Bancos</a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
-
+                        
                         <li>
                             <a href="#"><i class="fa fa-truck fa-fw"></i> Vehiculo<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -113,6 +125,7 @@
                                 </li>
                             </ul>
                         </li>
+                         @if(Auth::user()->hasRole('admin'))
                         <li>
                             <a href="#"><i class="fa fa-folder fa-fw"></i> Documentos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -122,6 +135,7 @@
                                 </li>
                             </ul>
                         </li>
+                        
                          <li>
                             <a href="#"><i class="fa fa-users fa-fw"></i> Usuario<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -133,6 +147,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
                         <li>
                             <a href="#"><i class="fa fa-usd fa-fw"></i> Precio<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -150,9 +165,11 @@
                                          echo number_format($precios2, 2, ",",".")." BsF";
                                          ?></strong></div>
                                 </li>
+                                @if(Auth::user()->hasRole('admin'))
                                 <li>
                                     <a href="/precio"><i class='fa fa-pencil fa-fw'></i> Cambiar Precio</a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
 

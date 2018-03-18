@@ -36,41 +36,50 @@
    @if (count($productor)>0)
         <table class="table table-striped task-table">
             <thead>
+               <th>Cod</th>
                 <th>Productor</th>
                 <th>CI</th>
                 <th>RIF</th>
                 <th>Nombre Juridico</th>
-             
-                  <th>Telefono</th>
+                 @if(Auth::user()->hasRole('admin'))
+                <th>Telefono</th>
+                @endif
+                @if(Auth::user()->hasRole('admin'))
                 <th>Acciones</th>
+                @endif
             </thead>
             <tbody>
                 @foreach($productor as $productores)
                 <tr>
+                    <td class="table-text"><div> {{$productores->cod}} </div></td>
                     <td class="table-text"><div> {{$productores->nombre}} </div></td>
                     <td class="table-text"><div> {{$productores->cedula}} </div></td>
                     <td class="table-text"><div> {{$productores->rif}} </div></td>
                     <td class="table-text"><div> {{$productores->finca}} </div></td>
+                      @if(Auth::user()->hasRole('admin'))
                       <td class="table-text"><div> {{$productores->telefono}} </div></td>
-                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarproductores/{{$productores->id}}'">
-                        <i class="fa fa-pencil"></i> Editar
-                    </button></td>
-                    <td><form action="{{url('tablaproductores')}}/{{$productores->id}}" method="post"> 
+                      @endif
+                      @if(Auth::user()->hasRole('admin'))
+                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarproductores/{{$productores->id}}'" style="Float: left">
+                        <i class="fa fa-pencil fa-2x"></i>
+                    </button>
+                    <form action="{{url('tablaproductores')}}/{{$productores->id}}" method="post" style="Float: left"> 
                     {{csrf_field()}} 
                     {{method_field ('DELETE')}} 
                     <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Esta Seguro de Eliminar a {{$productores->nombre}}, SE BORRARAN TODOS SUS REGISTROS, CUENTAS BANCARIAS, PESAJES, RECIBOS ENTRE OTRAS COSAS')">
-                        <i class="fa fa-trash"></i> Borrar
+                        <i class="fa fa-trash fa-2x"></i>
                     </button>
                     </form>
-                    </td>
-                      <td><form action="{{url('buscarreciboproductor')}}" method="post"> 
+                   
+                    <form action="{{url('buscarreciboproductor')}}" method="post" style="Float: left"> 
                     {{csrf_field()}}  
                     <input type="hidden" name="nombre" class="form-control"  value="{{$productores->cedula}}">
                     <button type="submit" class="btn btn-success btn-xs">
-                        <i class="fa fa-eye"></i> Visualizar
+                        <i class="fa fa-eye fa-2x"></i>
                     </button>
                     </form>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>

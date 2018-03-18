@@ -37,8 +37,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $request->user()->authorizeRoles(['user','admin','watcher']);
+            
           $productorsql="SELECT count(id) as idp FROM productor";
         $camionsql="SELECT count(id) as idp FROM camion";
         $pesajessql="SELECT count(id) as idp FROM pesaje where pago='NO'";

@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Validator;
 
 class VehiculoController extends Controller
 { 
-    public function vistaagregar()
+    public function vistaagregar(Request $request)
     {
+        $request->user()->authorizeRoles(['admin','user']);
         return view ('caagregar');    
     }
     
@@ -51,9 +52,13 @@ class VehiculoController extends Controller
       $validator = Validator::make($request->all(),
             [
                 'nombre'=>'required |max:70',
-                'placa'=>'required | min:6|max:8',
+                'placa'=>'required | min:6|max:8|unique:camion|unique:gandola',
                 'peso'=>'required |max:10',
                 'cedula'=>'required |min:6|max:9',
+                'marca'=>'required |max:20',
+                'modelo'=>'required |max:20',
+                'color'=>'required |max:20',
+                'ano'=>'required |min:2|max:4',
                 'telefono'=>'required |max:14|unique:camion',
                 
             ]);
@@ -95,6 +100,10 @@ class VehiculoController extends Controller
                     $camion->peso = $request ->peso;
                     $camion->cedula = $request ->cedula;
                     $camion->telefono = $request ->telefono;
+                    $camion->modelo = $request ->modelo;
+                    $camion->ano = $request ->ano;
+                    $camion->marca = $request ->marca;
+                    $camion->color = $request ->color;
                     
                     if($camion->save())
                     
@@ -158,6 +167,10 @@ class VehiculoController extends Controller
                 'peso'=>'required |max:70',
                 'cedula'=>'required |min:7',
                 'telefono'=>'required |max:14',
+                'marca'=>'required |max:20',
+                'modelo'=>'required |max:20',
+                'ano'=>'required |min:2|max:4',
+                'color'=>'required |max:20',
                 
                 
             ]);
@@ -173,6 +186,10 @@ class VehiculoController extends Controller
             $camion->peso = $request ->peso;
             $camion->cedula = $request ->cedula;
             $camion->telefono = $request ->telefono;
+            $camion->modelo = $request ->modelo;
+            $camion->ano = $request ->ano;
+            $camion->marca = $request ->marca;
+            $camion->color = $request ->color;
             $camion->save();
         
     return redirect('/tablacamiones');

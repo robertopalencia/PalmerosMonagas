@@ -8,7 +8,7 @@
 {{method_field ('PUT')}} 
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="nombre" class="control-label">Nombre</label>
+    <label for="nombre" class="control-label">Nombre y Apellido</label>
     <input type="text" name="nombre" class="form-control" value="{{$productor->nombre}}" required>
 </div>
 </div>
@@ -30,7 +30,16 @@
     <input type="text" name="finca" class="form-control" value="{{$productor->finca}}" required>
 </div>
 </div>
-
+<div class="col-xs-5">
+<div class="form-group">
+    <label for="type" class="control-label">Localidad</label>
+    <select name="localidad" class="form-control" required>
+      <option value=""></option>
+      <option value="hormiga">La Hormiga</option>
+      <option value="vueltalarga">Vuelta Larga</option>
+    </select> 
+</div>
+</div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="direccion" class="control-label">Dirección</label>

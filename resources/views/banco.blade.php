@@ -12,7 +12,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">Cuentas Bancarias</div>
     <div class="panel-body">
+        @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
         <button type="submit" class="btn btn-success btn" onclick="location.href='agregarcuenta'"><i class="fa fa-plus"></i>Agregar</button>
+        @endif
     <form action="{{url('buscarbanco')}}" method="post" class="navbar-form navbar-left pull-right">
      {{csrf_field()}}
     
@@ -39,11 +41,15 @@
             <thead>
                 <th>Nombre</th>
                 <th>Cedula o RIF</th>
+                @if(Auth::user()->hasRole('admin'))
                 <th>Correo</th>
+                @endif
                 <th>Banco</th>
                 <th>Cuenta Nº</th>
                 <th>Tipo</th>
+                @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                 <th>Acciones</th>
+                @endif
             </thead>
             <tbody>
                 
@@ -60,21 +66,26 @@
                      <td class="table-text"><div> {{$productores->nombre}} </div></td>
                     <td class="table-text"><div> {{$productores->cedula}} </div></td>
                     @endif
+                    @if(Auth::user()->hasRole('admin'))
                     <td class="table-text"><div> {{$productores->correo}} </div></td>
+                    @endif
                      <td class="table-text"><div> {{$bancos->banco}} </div></td>
                     <td class="table-text"><div> {{$bancos->cuenta}} </div></td>
                     <td class="table-text"><div> {{$bancos->tipocuenta}} </div></td>
+                    @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                 
-                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarcuenta/{{$bancos->id}}'">
-                        <i class="fa fa-pencil"></i>Editar
-                    </button></td>
-                    <td><form action="{{url('banco')}}/{{$bancos->id}}" method="post"> 
+                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarcuenta/{{$bancos->id}}'" style="Float: left">
+                        <i class="fa fa-pencil fa-2x"></i>
+                    </button>
+                    <form action="{{url('banco')}}/{{$bancos->id}}" method="post" style="Float: left"> 
                     {{csrf_field()}} 
                     {{method_field ('DELETE')}} 
                     <button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Esta Seguro de Eliminar la cuenta {{$bancos->tipocuenta}} de {{$bancos->banco}} de {{$productores->nombre}}')">
-                        <i class="fa fa-trash"></i>Borrar
+                        <i class="fa fa-trash fa-2x"></i>
                     </button>
-                    </form> </td>
+                    </form> 
+                    </td>
+                    @endif
                     @endif
                    </tr>
                 @endforeach

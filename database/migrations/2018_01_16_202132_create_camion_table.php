@@ -18,6 +18,10 @@ class CreateCamionTable extends Migration
             $table->string('nombre');
             $table->integer('cedula');
             $table->string('placa');
+             $table->string('modelo');
+            $table->string('marca');
+            $table->string('color');
+            $table->integer('ano');
             $table->integer('peso');
             $table->string('telefono');
             $table->timestamps();

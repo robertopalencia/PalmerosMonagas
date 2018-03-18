@@ -27,6 +27,8 @@ class CreatePesajeTable extends Migration
             $table->foreign('productor_id')->references('id')->on('productor')->onDelete('cascade');
             $table->integer('precio_id')->unsigned();
             $table->foreign('precio_id')->references('id')->on('precio');
+             $table->integer('cargagandola_id')->unsigned();
+            $table->foreign('cargagandola_id')->references('id')->on('cargagandola');
             $table->timestamps();
         });
     }

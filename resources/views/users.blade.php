@@ -46,7 +46,7 @@
                     {{csrf_field()}} 
                     {{method_field ('DELETE')}} 
                     <button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Esta Seguro de Eliminar el usuario  {{$users->name}}')">
-                        <i class="fa fa-trash"></i>Borrar
+                        <i class="fa fa-trash fa-2x"></i>
                     </button>
                     </form>
                     @endif

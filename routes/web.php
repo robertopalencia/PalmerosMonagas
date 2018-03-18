@@ -95,6 +95,7 @@ Route::get('control','PesajeController@control');
 Route::get('editarpesocamion/{id}','PesajeController@pesocamion');
 Route::put('editarpesocamion/{id}','PesajeController@updatecamion');
 Route::post('buscarcontrolfecha','PesajeController@search');
+Route::post('buscarcontrolfechagandola','PesajeController@searchByGandola');
 //**********************DOCUMENTOS*******************************
 Route::get('recibo','DocumentosController@recibo');
 Route::get('informe','DocumentosController@listadoinforme');

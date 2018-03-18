@@ -15,7 +15,10 @@
          @if (count($cupo)==0 && count($cupos)>0 )
            <button type="submit" class="btn btn-success btn" onclick="location.href='cupos'"><i class="fa fa-arrow-left"></i>Regresar</button>
          @endif
+         @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
         <button type="submit" class="btn btn-success btn" onclick="location.href='agregarcupos'"><i class="fa fa-plus"></i>Agregar</button>
+        @endif
+         @if(Auth::user()->hasRole('admin'))
     <form action="{{url('buscarcupos')}}" method="post" class="navbar-form navbar-left pull-right">
      {{csrf_field()}}
     
@@ -31,7 +34,8 @@
         </div>
    
     
-    </form>    
+    </form>  
+    <br>  
   @if(count($cupo)==0)
     @if(count($cupos)==0)
     <br><br>
@@ -94,6 +98,7 @@
     </div>
     </div>
      @endif
+    @endif
     @endif
 </div>
 @stop

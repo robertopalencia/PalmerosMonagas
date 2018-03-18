@@ -17,6 +17,11 @@ class CreateGandolaTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('placa');
+            $table->string('placaremolque');
+            $table->string('modelo');
+            $table->string('marca');
+            $table->string('color');
+            $table->integer('ano');
             $table->string('chofer');
             $table->integer('cedula');
             $table->integer('peso');

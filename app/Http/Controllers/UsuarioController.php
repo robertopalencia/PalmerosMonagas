@@ -52,7 +52,7 @@ class UsuarioController extends Controller
             [
                 'name'=>'required | max:70',
                 'password'=>'required|string|min:6|confirmed',
-                'type'=>'required',
+                'tipo'=>'required',
                 'email'=>'required | email',
             ]);
                 if($validator->fails()){

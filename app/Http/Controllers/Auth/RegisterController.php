@@ -1,14 +1,16 @@
 <?php
 
 namespace Palma\Http\Controllers\Auth;
-
+use Palma\Role;
 use Palma\User;
-use Palma\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
+   
+       
+   
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -51,6 +53,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'tipo'=>'required',
         ]);
     }
 
@@ -62,10 +65,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+         $user=User::create([
+            'name'=>$data['name'],
+            'email'=>$data ['email'],
+            'password'=>bcrypt($data['password']),
+            
         ]);
+        if($data['tipo']=='Administrador')
+        {
+           $user->roles()->attach(Role::where('name', 'admin')->first());
+            return $user; 
+        }
+        else if($data['tipo']=='Usuario') 
+        {
+            $user->roles()->attach(Role::where('name', 'user')->first());
+            return $user; 
+        }
+         else if($data['tipo']=='Observador') 
+        {
+            $user->roles()->attach(Role::where('name', 'watcher')->first());
+            return $user; 
+        }
+        
     }
 }

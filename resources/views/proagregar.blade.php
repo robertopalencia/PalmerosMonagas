@@ -14,7 +14,7 @@
 {{csrf_field()}}
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="nombre" class="control-label">Nombre</label>
+    <label for="nombre" class="control-label">Nombre y Apellido</label>
     <input type="text" name="nombre" class="form-control" required>
 </div>
 </div>
@@ -34,6 +34,24 @@
 <div class="form-group">
     <label for="finca" class="control-label">Nombre de Juridico</label>
     <input type="text" name="finca" class="form-control" required>
+</div>
+</div>
+<div class="col-xs-5">
+<div class="form-group">
+    <label for="localidad" class="control-label">Localidad</label>
+    <select name="localidad" class="form-control" required>
+      <option value=""></option>
+      <option value="Aguila">Águila</option>
+      <option value="Cachipo">Cachipo</option>
+      <option value="Caripito">Caripito</option>
+      <option value="El Barril">El Barril</option>
+       <option value="El Zamuro">El Zamuro</option>
+      <option value="La Hormiga">La Hormiga</option>
+      <option value="Pica June">Pica June</option>
+      <option value="San Augustin">San Augustin</option>
+      <option value="Vivoral">Vivoral</option>
+      <option value="Vuelta Larga">Vuelta Larga</option>
+    </select> 
 </div>
 </div>
 <div class="col-xs-5">

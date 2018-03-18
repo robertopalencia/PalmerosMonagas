@@ -66,7 +66,7 @@
         <div class="col-xs-5">
             <div class="form-group">
                 <label for="gandola" class="control-label">Placa Gandola</label>
-                <input type="text" name="gandola" class="form-control" required
+                <input type="text" name="gandola" class="form-control" required>
             </div>
         </div>
         @else
@@ -86,27 +86,27 @@
         </div>
     {{ Form::close() }}
        @if($idgandola>0)
-         <div class="col-xs-5">
+         <div class="col-xs-5" style="Float: left">
             <div class="form-group">
                        @if(session()->has('idcarga'))
              
-                <form action="{{url('editargandolas')}}/{{session('idcarga')}}" method="post"> 
+                <form action="{{url('editargandolas')}}/{{session('idcarga')}}" method="post" > 
                     {{csrf_field()}} 
                     {{method_field ('PUT')}} 
                      <strong> {{session('pesoneto')}}/{{session('gandolapeso')}} Kg. Cargados en la Gandola Placas {{session('placagandola')}}</strong>
-                       <button type="submit" class="btn btn-danger btn"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS , SE BORRARAN TODOS SUS REGISTROS')">
-                        <i class="fa fa-stop"></i> FINALIZAR
+                       <button type="submit" class="btn btn-danger btn"  onclick="return confirm('¿Esta Seguro de que la gandola ha sido cargada completamente?')">
+                        <i class="fa fa-stop"></i>
                     </button>
                    
                     </form>
                    
                 @else
-                               <form action="{{url('editargandolas')}}/{{$idcarga}}" method="post"> 
+                               <form action="{{url('editargandolas')}}/{{$idcarga}}" method="post" > 
                     {{csrf_field()}} 
                     {{method_field ('PUT')}} 
-                    <strong> {{$pesoneto}}/{{$gandolapeso}} Kg. Cargados en la Gandola Placas {{$placagandola}}</strong>
-                    <button type="submit" class="btn btn-danger btn"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS , SE BORRARAN TODOS SUS REGISTROS')">
-                        <i class="fa fa-stop"></i> FINALIZAR
+                    <strong> {{number_format($pesoneto, 0, ",",".")}}Kg de {{number_format($gandolapeso, 0, ",",".")}} Kg. Gandola Placas {{$placagandola}}</strong>
+                    <button type="submit" class="btn btn-danger btn"  onclick="return confirm('¿Esta Seguro de que la gandola ha sido cargada completamente?')">
+                        <i class="fa fa-stop"></i>
                     </button>
                     
                     </form>
