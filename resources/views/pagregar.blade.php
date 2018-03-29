@@ -40,45 +40,63 @@
       
         <div class="col-xs-5">
             <div class="form-group">
-                <label for="carga" class="control-label">Carga en KG</label>
-                <input type="text" name="carga" class="form-control" required >
+                <label for="carga" class="control-label">Peso Bruto</label>
+                <input type="number" step="0.01" name="carga" class="form-control" value="{{old('carga')}}" required >
             </div>
         </div>
         <div class="col-xs-5">
             <div class="form-group">
-                <label for="descripcion" class="control-label">Descripción</label>
-                <input type="text" name="descripcion" class="form-control" required>
+                <label for="tara" class="control-label">Tara</label>
+                <input type="number" step="0.01" name="tara" class="form-control" value="{{old('tara')}}" required >
             </div>
         </div>
+       
         <div class="col-xs-5">
             <div class="form-group">
                 <label for="placa" class="control-label">Placa Camion</label>
-                <input type="text" name="placa" class="form-control" required>
+                <input type="text" name="placa" class="form-control" value="{{old('placa')}}" required>
             </div>
         </div>
         <div class="col-xs-5">
-<div class="form-group">
-    <label for="rif" class="control-label">RIF</label>
-    <div class="input-group">
-    <select name="letra" class="form-control" required>
-     <option value=""></option>
-     <option value="C">C</option>
-     <option value="E">E</option>
-     <option value="G">G</option>
-     <option value="J">J</option>
-     <option value="P">P</option>
-     <option value="V">V</option>
-    </select>
-    <span class="input-group-addon">-</span> 
-    <input type="text" name="rif" class="form-control" required>
-    </div>
-</div>
-</div>
+            <div class="form-group">
+                <label for="rif" class="control-label">RIF</label>
+                <div class="input-group">
+                    <select name="letra" class="form-control" required>
+                     <option value=""></option>
+                     <option value="C">C</option>
+                     <option value="E">E</option>
+                     <option value="G">G</option>
+                     <option value="J">J</option>
+                     <option value="P">P</option>
+                     <option value="V">V</option>
+                    </select>
+                    <span class="input-group-addon">-</span> 
+                <input type="number" name="rif" class="form-control" value="{{old('rif')}}" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div class="form-group">
+                <label for="precio" class="control-label">Tipo de Precio</label>
+                
+                    <select name="precio" class="form-control" required>
+                     <option value=""></option>
+                     <option value="contado">Contado</option>
+                     <option value="credito">Credito</option>
+                    </select>
+            </div>
+        </div>
+    <div class="col-xs-5">
+            <div class="form-group">
+                <label for="descripcion" class="control-label">Descripción</label>
+                <input type="text" name="descripcion" class="form-control" value="{{old('descripcion')}}" required>
+            </div>
+        </div>
      @if($idgandola==0)
         <div class="col-xs-5">
             <div class="form-group">
                 <label for="gandola" class="control-label">Placa Gandola</label>
-                <input type="text" name="gandola" class="form-control" required>
+                <input type="text" name="gandola" class="form-control" value="{{old('gandola')}}" required>
             </div>
         </div>
         @else
@@ -88,6 +106,7 @@
          <input type="hidden" name="gandola" class="form-control" value="{{$placagandola}}">
          @endif
         @endif
+         
         <div class="col-xs-5">
             <div class="form-group">
                 <br>
@@ -105,7 +124,7 @@
                 <form action="{{url('editargandolas')}}/{{session('idcarga')}}" method="post" > 
                     {{csrf_field()}} 
                     {{method_field ('PUT')}} 
-                     <strong> {{session('pesoneto')}}/{{session('gandolapeso')}} Kg. Cargados en la Gandola Placas {{session('placagandola')}}</strong>
+                     <strong> {{session('pesoneto')}}/{{session('gandolapeso')}} Ton. Cargados en la Gandola Placas {{session('placagandola')}}</strong>
                        <button type="submit" class="btn btn-danger btn"  onclick="return confirm('¿Esta Seguro de que la gandola ha sido cargada completamente?')">
                         <i class="fa fa-stop"></i>
                     </button>
@@ -116,7 +135,7 @@
                                <form action="{{url('editargandolas')}}/{{$idcarga}}" method="post" > 
                     {{csrf_field()}} 
                     {{method_field ('PUT')}} 
-                    <strong> {{number_format($pesoneto, 0, ",",".")}}Kg de {{number_format($gandolapeso, 0, ",",".")}} Kg. Gandola Placas {{$placagandola}}</strong>
+                    <strong> {{number_format($pesoneto, 2, ",",".")}} Ton. de {{number_format($gandolapeso, 2, ",",".")}} Ton. Gandola Placas {{$placagandola}}</strong>
                     <button type="submit" class="btn btn-danger btn"  onclick="return confirm('¿Esta Seguro de que la gandola ha sido cargada completamente?')">
                         <i class="fa fa-stop"></i>
                     </button>

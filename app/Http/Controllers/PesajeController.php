@@ -24,7 +24,7 @@ class PesajeController extends Controller
         $fecha=$fecha->format('Y-m-d');
         $fecha2=$fecha;  
         
-        $sql="SELECT Pe.peso AS peso, Pe.cargagandola_id AS cargagandola, Po.cod, C.modelo, C.marca, C.ano, descuento, C.cedula as cedula, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, Pe.precio, Pr.preciocontado, Pr.preciocredito, Pe.cargagandola_id AS cargagandola, Po.cod, C.modelo, C.marca, C.ano, descuento, C.cedula as cedula, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -41,9 +41,14 @@ class PesajeController extends Controller
         $monagas=0;
         foreach ($control as $precio)
         {
-            
-            $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento)/1000, 2)*$precio->precio);
-            $total=$total+truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento)/1000, 2);
+            if($precio->precio==0){
+            $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2)*$precio->preciocontado);
+            }
+            else
+            {
+               $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2)*$precio->preciocredito); 
+            }
+            $total=$total+truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2);
             $monagas=$monagas+($precio->carga-$precio->peso-$precio->descuento);
            
         }
@@ -53,7 +58,7 @@ class PesajeController extends Controller
     { 
         
         
-        $sql="SELECT Pe.peso AS peso, descuento, C.cedula as cedula, Po.cod, C.modelo, C.marca, C.ano, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, descuento, Pe.precio, Pr.preciocontado, Pr.preciocredito, C.cedula as cedula, Po.cod, C.modelo, C.marca, C.ano, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -73,8 +78,14 @@ class PesajeController extends Controller
         $fecha2=$request->nombre;
         foreach ($control as $precio)
         {
-            $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento)/1000, 2)*$precio->precio);
-            $total=$total+truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento)/1000, 2);
+            if($precio->precio==0){
+            $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2)*$precio->preciocontado);
+            }
+            else
+            {
+               $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2)*$precio->preciocredito); 
+            }
+            $total=$total+truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2);
             $monagas=$monagas+($precio->carga-$precio->peso-$precio->descuento);
         }
             return view('control',['controles'=>$control, 'total'=>$monto,'msj'=>'No hay registros para la fecha: '.$request->nombre, 'hoy'=>'0','fecha'=>$fecha, 'totalcarga'=>$total,'fecha2'=>$fecha2, 'gandolas'=>$gandola,'monagas'=>$monagas]);
@@ -82,7 +93,7 @@ class PesajeController extends Controller
      public function searchByGandola(Request $request)
     {
         
-        $sql="SELECT Pe.peso AS peso, descuento, C.cedula as cedula, Po.cod, C.modelo, C.marca, C.ano, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
+        $sql="SELECT Pe.peso AS peso, descuento, C.cedula as cedula, Pe.precio, Pr.preciocontado, Pr.preciocredito, Po.cod, C.modelo, C.marca, C.ano, C.nombre as nombre, Po.id as poid, Pe.created_at AS entrada, Pe.updated_at AS salida, rif, finca, Po.nombre AS nombre, placa, carga, Pe.id AS pid, C.id AS cid, fecha, precio 
            FROM pesaje Pe 
            INNER JOIN productor Po 
            ON Pe.productor_id=Po.id
@@ -102,8 +113,14 @@ class PesajeController extends Controller
         $fecha2=$request->fecha;
         foreach ($control as $precio)
         {
-            $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento)/1000, 2)*$precio->precio);
-            $total=$total+truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento)/1000, 2);
+            if($precio->precio==0){
+            $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2)*$precio->preciocontado);
+            }
+            else
+            {
+               $monto=$monto+(truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2)*$precio->preciocredito); 
+            }
+            $total=$total+truncateFloatNumber(($precio->carga-$precio->peso-$precio->descuento), 2);
             $monagas=$monagas+($precio->carga-$precio->peso-$precio->descuento);
         }
             return view('control',['controles'=>$control, 'total'=>$monto,'msj'=>'No hay registros para la fecha: '.$request->nombre, 'hoy'=>'0','fecha'=>$fecha,'totalcarga'=>$total,'fecha2'=>$fecha2,'gandolas'=>$gandola,'monagas'=>$monagas]);
@@ -180,10 +197,13 @@ class PesajeController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'carga'=>'required |max:2000000|numeric',
+                'tara'=>'required |max:2000000|numeric',
                 'descripcion'=>'required |max:70',
                 'rif'=>'required |min:6|max:14',
                 'placa'=>'required |min:6|max:9',
+                'gandola'=>'required |min:6|max:9',
                 'letra'=>'required',
+                'precio'=>'required',
                 
             ]);
                 if($validator->fails())
@@ -207,7 +227,8 @@ class PesajeController extends Controller
                      
                     if($precios->id>=$precios2) {
                         $precios2=$precios->id;
-                        $precio3=$precios->precio;
+                        $preciocredito=$precios->preciocredito;
+                        $preciocontado=$precios->preciocontado;
                                              }
                                          } 
                  $idcamion=0;
@@ -266,14 +287,29 @@ class PesajeController extends Controller
            {
                if ($idgandola!=0)
                {
+                   
+            $camion=Camion::findOrFail($idcamion);
+            
+            $camion->peso = $request ->tara;
+            $camion->save();
+                   
             $carga=new Pesaje;
             $carga->carga = $request->carga;
             $carga->descripcion = $request->descripcion;
-            $carga->peso=$pesocamion;
+            $carga->peso=$request->tara;
             $carga->pago="NO";
             $carga->camion_id = $idcamion;
+                   
             $carga->productor_id = $idproductor;
             $carga->precio_id = $precios2;
+               if ($request->precio=='contado')
+                {
+                    $carga->precio=0;
+                }
+                else
+                {
+                $carga->precio=1;    
+                }
                
                 if(count($cargagandola)>0)
                 {
@@ -288,15 +324,23 @@ class PesajeController extends Controller
                 $fecha=$fecha->format('Y-m-d');
                 $carga->fecha = $fecha;
                 $carga->cargagandola_id = $idcarga;
+             
              if($carga->save()){
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('descuento', '0');
+                 if($request->precio=='contado')
+                 {
+                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocontado)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('descuento', '0');
+                 }
+                 else if($request->precio=='credito')
+                 {
+                  return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocredito)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('descuento', '0');   
+                 }
             }
                 }
             
                 else 
                 {
                     $cargagandola=new Cargagandola;
-                    $pesaje=$request->carga-$pesocamion;
+                    $pesaje=$request->carga-$request->tara;
                     $cargagandola->peso_neto = $pesaje;
                     $cargagandola->id_gandola = $idgandola;
                     $cargagandola->finale = "no";
@@ -320,7 +364,14 @@ class PesajeController extends Controller
             $carga->fecha = $fecha;
             $carga->cargagandola_id = $idcarga;
              if($carga->save()){
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$pesocamion)->with('carga',$request->carga)->with('precio',$precio3)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
+                   if($request->precio=='contado')
+                 {
+                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocontado)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
+                   }
+                 else if($request->precio=='credito')
+                 {
+                      return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocredito)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
+                 }
             }
                 }
           
@@ -380,48 +431,57 @@ class PesajeController extends Controller
         $salida = $carbon->now();
         $salida=$salida->format('G:i:s');
         
-        $pdf= PDF::loadView('imprimircarga',['cedula'=>$request->cedula, 'cod'=>$request->cod, 'chofer'=>$request->chofer, 'peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'rif'=>$request->rif,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento, 'entrada'=>$entrada, 'salida'=>$salida, 'id'=>$request->id, 'modelo'=>$request->marca." ".$request->modelo.", Año ".$request->ano]);
+        $pdf= PDF::loadView('imprimircarga',['cedula'=>$request->cedula, 'cod'=>$request->cod, 'chofer'=>$request->chofer, 'peso'=>$request->peso, 'carga'=>$request->carga,'precio'=>$request->precio,'preciocontado'=>$request->preciocontado,'preciocredito'=>$request->preciocredito, 'rif'=>$request->rif,'nombre'=>$request->nombre,'fecha'=>$fecha,'placa'=>$request->placa, 'descuento'=>$request->descuento, 'entrada'=>$entrada, 'salida'=>$salida, 'id'=>$request->id, 'modelo'=>$request->marca." ".$request->modelo.", Año ".$request->ano]);
         $paper_size = array(0,0,200,380);
         $pdf->setPaper($paper_size);
         return $pdf->stream('Nota de Entrega '.$request->nombre.' '.$fecha.' .pdf');
     }
     public function pdfrecibo(Request $request) 
     {
-         $sql = "SELECT * FROM productor WHERE rif='".$request->nombre."' OR cedula='".$request->nombre."'";  
-            $sql2 = "SELECT * FROM banco INNER JOIN productor
+        $sql = "SELECT * FROM productor WHERE rif='".$request->nombre."' OR cedula='".$request->nombre."'";  
+        $sql2 = "SELECT * FROM banco INNER JOIN productor
         ON  banco.productor_id = productor.id WHERE rif='".$request->nombre."' OR cedula='".$request->nombre."'";  
-                $productorid=0;
-            $productornombre=0; 
-                  $productorcedula=0;
-                 $productorrif=0;
-                $productorfinca=0;
-               $productorcorreo=0;
-                $productordir=0;
-            $productor=DB::select($sql);
-                 $banco=DB::select($sql2);
-            foreach($productor as $productores){
+        $productorid=0;
+        $productornombre=0; 
+        $productorcedula=0;
+        $productorrif=0;
+        $productorfinca=0;
+        $productorcorreo=0;
+        $productordir=0;
+        $productor=DB::select($sql);
+        $banco=DB::select($sql2);
+        foreach($productor as $productores)
+        {
             $productorid=$productores->id;
             $productornombre=$productores->nombre;
             $productorcedula=$productores->cedula;
-                 $productorrif=$productores->rif;
-                $productorfinca=$productores->finca;
-               $productorcorreo=$productores->correo;
-                 $productordir=$productores->direccion;
-                $productorcod=$productores->cod;
-            }
-        $sqlcarga = "SELECT P.id, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id, descuento FROM pesaje P INNER JOIN precio B 
+            $productorrif=$productores->rif;
+            $productorfinca=$productores->finca;
+            $productorcorreo=$productores->correo;
+            $productordir=$productores->direccion;
+            $productorcod=$productores->cod;
+        }
+        
+        $sqlcarga = "SELECT P.id, P.precio, B.preciocontado, B.preciocredito, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id, descuento FROM pesaje P INNER JOIN precio B 
         ON P.precio_id = B.id
         WHERE productor_id='".$productorid."' AND  pago='NO'";
-      $carbon = new \Carbon\Carbon();
-            $fecha = $carbon->now();
-            $fecha=$fecha->format('d-m-Y');
-                
-                $pesaje=DB::select($sqlcarga);
-                $total=0;
+        $carbon = new \Carbon\Carbon();
+        $fecha = $carbon->now();
+        $fecha=$fecha->format('d-m-Y');
+        $pesaje=DB::select($sqlcarga);
+        $total=0;
         $totaltoneladas=0;
-               foreach($pesaje as $pesajes){
-          $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000,$pesajes->precio,2));
-           $totaltoneladas=$totaltoneladas + truncateFloatNumber(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000, 2);
+        foreach($pesaje as $pesajes)
+        {
+            if($pesajes->precio==0)
+            {
+                $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocontado,2));
+            }
+            else
+            {
+               $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocredito,2));        
+            }
+           $totaltoneladas=$totaltoneladas + truncateFloatNumber(($pesajes->carga-$pesajes->peso-$pesajes->descuento), 2);
                
             }
     $pdf= PDF::loadView('imprimir',['productornombre'=>$productornombre, 'productorid'=>$productorid, 'pesaje'=>$pesaje, 'productorcedula'=>$productorcedula, 'productorrif'=>$productorrif, 'banco'=>$banco, 'productorfinca'=>$productorfinca,'total'=>$total,'productorcorreo'=>$productorcorreo,  'msj'=>'El productor: '.$productornombre." no tiene recibos por cobrar",'productordir'=>$productordir,'productor'=>$productor,'fecha'=>$fecha, 'totalt'=>$totaltoneladas, 'cod'=>$productorcod]);

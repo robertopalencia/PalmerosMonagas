@@ -61,7 +61,7 @@ class DocumentosController extends Controller
             $productordir=$productores->direccion;
         }
         
-        $sqlcarga = "SELECT P.id, descuento, B.precio, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id 
+        $sqlcarga = "SELECT P.id, P.precio, descuento, B.preciocontado, B.preciocredito, carga, peso, pago, descripcion, fecha, camion_id, productor_id, precio_id 
         FROM pesaje P 
         INNER JOIN precio B 
         ON P.precio_id = B.id
@@ -71,8 +71,15 @@ class DocumentosController extends Controller
         $pesaje=DB::select($sqlcarga);
         $total=0;
         foreach($pesaje as $pesajes)
-        {
-            $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000,$pesajes->precio,2));
+        { 
+            if($pesajes->precio==0)
+            {
+            $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocontado,2));
+            }
+            else
+            {
+               $total=$total + (totalPrecioFloat(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocredito,2));  
+            }
            
         }
         
@@ -102,7 +109,7 @@ class DocumentosController extends Controller
     }
     public function confirmacionpago($id)
     {
-        $sqlcarga = "SELECT P.id, B.precio, P.productor_id 
+        $sqlcarga = "SELECT P.id, P.precio, B.preciocontado, B.preciocredito, P.productor_id 
         FROM pesaje P 
         INNER JOIN precio B 
         ON P.precio_id = B.id
@@ -143,7 +150,7 @@ class DocumentosController extends Controller
     public function informe()
     {
        $sql = "
-       SELECT P.id AS pid, C.id AS cp, C.tipo, P.carga AS pcarga, P.peso AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, P.descuento AS pdescuento 
+       SELECT P.id AS pid, P.precio, C.id AS cp, C.tipo, P.carga AS pcarga, P.peso AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.preciocontado, B.preciocredito, P.peso, P.carga, P.descuento AS pdescuento 
        FROM pesaje P 
        INNER JOIN precio B 
        ON P.precio_id = B.id 
@@ -151,7 +158,7 @@ class DocumentosController extends Controller
        ON P.productor_id = R.id 
        INNER JOIN banco C ON R.id = C.productor_id 
        WHERE P.pago = 'NO'  
-       ORDER BY B.precio ASC";  
+       ORDER BY B.preciocontado ASC";  
         $carbon = new \Carbon\Carbon();
         $fecha = $carbon->now();
         $fecha=$fecha->format('d-m-Y');
@@ -163,7 +170,15 @@ class DocumentosController extends Controller
         $total=0;
         foreach($productor as $var)
         {
-            $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2))*$var->precio)+$total;
+            if($var->precio==0)
+            {
+              $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento), 2))*$var->preciocontado)+$total;  
+            }
+            else 
+            {
+                 $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento), 2))*$var->preciocredito)+$total;   
+            }
+            
         }
         
         $productor=DB::select($sql);
@@ -173,7 +188,7 @@ class DocumentosController extends Controller
     public function buscarrecibopago(Request $request)
     {
         $sql = "
-       SELECT P.id AS pid, C.id AS cp, C.tipo, P.carga AS pcarga, P.peso AS ppeso, R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.precio, P.peso, P.carga, P.descuento AS pdescuento 
+       SELECT P.id AS pid, C.id AS cp, C.tipo, P.carga AS pcarga, P.peso AS ppeso,  R.nombre, R.finca, R.cedula, R.rif, C.cuenta, C.tipocuenta, C.banco, P.pago, B.preciocontado, B.preciocredito, P.precio, P.peso, P.carga, P.descuento AS pdescuento 
        FROM pesaje P 
        INNER JOIN precio B 
        ON P.precio_id = B.id 
@@ -181,7 +196,7 @@ class DocumentosController extends Controller
        ON P.productor_id = R.id 
        INNER JOIN banco C ON R.id = C.productor_id 
        WHERE P.pago = 'SI' AND fecha='".$request->nombre."'   
-       ORDER BY B.precio ASC";  
+       ORDER BY B.preciocontado ASC";  
             
         $fecha=date_create($request->nombre);
         $fecha=$fecha->format('d-m-Y');
@@ -190,7 +205,15 @@ class DocumentosController extends Controller
         $total=0;
         foreach($productor as $var)
         {
-            $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, 2))*$var->precio)+$total;
+            if($var->precio==0)
+            {
+             $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento), 2))*$var->preciocontado)+$total;   
+            }
+            else
+            {
+             $total=((truncateFloatNumber(($var->pcarga-$var->ppeso-$var->pdescuento), 2))*$var->preciocredito)+$total;   
+            }
+            
         }
         
         $productor=DB::select($sql);

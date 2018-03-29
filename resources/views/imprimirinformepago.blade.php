@@ -54,9 +54,16 @@
                       <td class="table-text"><div> {{$var->tipocuenta}} </div></td>
                     <td class="table-text"><div> {{$var->cuenta}} </div></td>
                    
-                    <td class="table-text"><div>{{neto($var->pcarga/1000,$var->ppeso/1000,$var->pdescuento/1000,2)}}</div></td>
+                    <td class="table-text"><div>{{neto($var->pcarga,$var->ppeso,$var->pdescuento,2)}}</div></td>
                    
-                    <td class="table-text"><div> {{totalPrecio(($var->pcarga-$var->ppeso-$var->pdescuento)/1000, $var->precio,2)}}  </div></td>
+                    <td class="table-text"><div>
+                    @if($var->precio==0)
+                     
+                      {{totalPrecio(($var->pcarga-$var->ppeso-$var->pdescuento), $var->preciocontado,2)}} 
+                    @else
+                       {{totalPrecio(($var->pcarga-$var->ppeso-$var->pdescuento), $var->preciocredito,2)}}
+                       @endif   
+                        </div></td>
                    
                      
                 </tr>

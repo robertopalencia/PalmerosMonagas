@@ -22,7 +22,7 @@ class CreateCamionTable extends Migration
             $table->string('marca');
             $table->string('color');
             $table->integer('ano');
-            $table->integer('peso');
+            $table->decimal('peso', 10, 2);
             $table->string('telefono');
             $table->timestamps();
         });

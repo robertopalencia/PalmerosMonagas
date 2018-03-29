@@ -60,8 +60,8 @@
 
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="peso" class="control-label">Peso del Vehiculo sin carga en KG</label>
-    <input type="text" name="peso" class="form-control" value="{{$camion->peso}}" required>
+    <label for="peso" class="control-label">Tara del Vehiculo</label>
+    <input type="number" step="0.01" name="peso" class="form-control" value="{{$camion->peso}}" required>
 </div>
 </div>
 <div class="col-xs-5">

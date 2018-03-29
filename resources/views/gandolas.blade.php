@@ -36,11 +36,11 @@
                    <?php $anterior=$gandola->cid; ?>
                     
                     <td class="table-text"><div> {{$gandola->placa}} </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_neto}}Kg </div></td>
-                    <td class="table-text"><div> {{$gandola->peso_real}}Kg</div></td>
-                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_neto}}Kg</div></td>
-                    <td class="table-text"><div> {{$gandola->peso_mermado}}Kg</div></td>
-                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_mermado}}Kg </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_neto}}Ton </div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real}}Ton</div></td>
+                    <td class="table-text"><div> {{$gandola->peso_real-$gandola->peso_neto}}Ton</div></td>
+                    <td class="table-text"><div> {{$gandola->peso_mermado}}Ton</div></td>
+                    <td class="table-text"><div> {{number_format($gandola->peso_real-$gandola->peso_mermado, 2,'.',',')}}Ton </div></td>
                     
                     <td class="table-text"><div> {{$gandola->fecha}} </div></td>
                     <td class="table-text"><div> {{$gandola->ubicacion}} </div></td>

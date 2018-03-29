@@ -48,7 +48,8 @@ class MainController extends BaseController
     {
          $validator = Validator::make($request->all(),
             [
-                'precio'=>'required|max:12',
+                'preciocontado'=>'required|max:20',
+                'preciocredito'=>'required|max:20',
             ]);
         
         if($validator->fails())
@@ -59,7 +60,8 @@ class MainController extends BaseController
         }
         
         $precio=new Precio;
-        $precio->precio = $request->precio;    
+        $precio->preciocontado = $request->preciocontado;
+        $precio->preciocredito = $request->preciocredito; 
         $precio->save();
         return redirect ('/precio');
       

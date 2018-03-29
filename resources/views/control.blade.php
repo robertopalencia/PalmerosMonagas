@@ -92,14 +92,18 @@
                     <td class="table-text"><div> {{$control->placa}} </div></td>
                    
                    
-                    <td class="table-text"><div> {{number_format($control->peso, 0, ",",".")}}Kg </div></td>
+                    <td class="table-text"><div> {{number_format($control->peso, 2, ",",".")}}Ton </div></td>
                     @if(Auth::user()->hasRole('admin'))
-                    <td class="table-text"><div> {{number_format($control->carga-$control->peso-$control->descuento, 0,",",".")}}Kg </div>
+                    <td class="table-text"><div> {{number_format($control->carga-$control->peso-$control->descuento, 2,",",".")}}Ton </div>
                     </td>
                     @endif
-                   <td class="table-text"><div> {{number_format($control->descuento, 0, ",",".")}}Kg </div></td>
-                    @if(Auth::user()->hasRole('admin')) 
-                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)/1000), $control->precio, 2)}} BsF 
+                   <td class="table-text"><div> {{number_format($control->descuento, 2, ",",".")}}Ton </div></td>
+                    @if(Auth::user()->hasRole('admin'))
+                    @if($control->precio==0) 
+                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)), $control->preciocontado, 2)}} BsF
+                    @else 
+                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)), $control->preciocredito, 2)}} BsF
+                    @endif
                     </div>
                     </td>
                     @endif
@@ -123,6 +127,8 @@
                 <input type="hidden" name="carga" class="form-control" value="{{$control->carga}}">
                 <input type="hidden" name="descuento" class="form-control" value="{{$control->descuento}}">
                 <input type="hidden" name="precio" class="form-control" value="{{$control->precio}}">
+                <input type="hidden" name="preciocontado" class="form-control" value="{{$control->preciocontado}}">
+                <input type="hidden" name="preciocredito" class="form-control" value="{{$control->preciocredito}}">
                 <input type="hidden" name="rif" class="form-control" value="{{$control->rif}}">
                 <input type="hidden" name="nombre" class="form-control" value="{{$control->finca}}">
                 <input type="hidden" name="cod" class="form-control" value="{{$control->cod}}">
@@ -161,20 +167,7 @@
                     <td class="table-text"><div> </div></td>
                     </tr>
                 
-                     <tr>
-                 <td class="table-text"><div></div></td>
-                    <td class="table-text"><div> </div></td>
-                     
-                    <td class="table-text"><div><h4><strong>Monagas</strong></h4></div></td>
-                    <td class="table-text"><div><h4><strong>{{number_format($monagas, 0, ",",".")}}Kg</strong></h4></div></td>
-                   
-                    <td class="table-text"><div></div></td>
-                    <td class="table-text"><div></div>
-                    </td>
-                   
-                    <td class="table-text"><div><h4><strong> </strong></h4></div></td>
-                    <td class="table-text"><div> </div></td>
-                    </tr>
+                  
                      @endif
             </tbody>
         </table>

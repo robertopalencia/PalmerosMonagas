@@ -7,12 +7,19 @@
 {{csrf_field()}}
 <div class="col-xs-5">
 <div class="form-group">
-    <input type="number"  name="precio" class="form-control" >
+   <label for="preciocontado" class="control-label">Precio a Contado</label>
+    <input type="number"  name="preciocontado" class="form-control" >
+</div>
+</div>
+<div class="col-xs-5">
+<div class="form-group">
+   <label for="preciocredito" class="control-label">Precio a Credito</label>
+    <input type="number"  name="preciocredito" class="form-control" >
 </div>
 </div>
 <div class="form-group">
    
-     <button type="submit" class='btn btn-info'><i class="fa fa-plus"></i> Agregar Nuevo Precio</button>
+     <button type="submit" class='btn btn-info'><i class="fa fa-plus"></i> Agregar Nuevos Precio</button>
     
 </div>
 </form>

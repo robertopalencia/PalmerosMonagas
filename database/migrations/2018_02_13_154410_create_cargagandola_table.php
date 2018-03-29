@@ -16,9 +16,9 @@ class CreateCargagandolaTable extends Migration
         Schema::create('cargagandola', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('peso_neto');
-            $table->integer('peso_mermado');
-            $table->integer('peso_real');   
+            $table->decimal('peso_neto',10, 2);
+            $table->decimal('peso_mermado', 10, 2);
+            $table->decimal('peso_real', 10, 2);   
             $table->string('finale');
             $table->integer('id_gandola')->unsigned()->nullable();
             $table->foreign('id_gandola')->references('id')->on('gandola')->onDelete('set null');

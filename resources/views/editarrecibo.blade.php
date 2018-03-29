@@ -28,7 +28,13 @@
     </form> 
 
        @else
-        <strong><h3>Esta Seguro que el RECIBO de fecha:  {{$pesaje->fecha}}, con un monto de  @foreach($pesaje2 as $var){{number_format((($pesaje->carga-$pesaje->peso)/1000)*$var->precio, 2, ",",".")}}@endforeach. Ha sido cancelado al Productor: {{$productor->nombre}}.</h3></strong>  
+        <strong><h3>Esta Seguro que el RECIBO de fecha:  {{$pesaje->fecha}}, con un monto de  @foreach($pesaje2 as $var)
+        @if($pesaje->precio==0)
+        {{number_format((($pesaje->carga-$pesaje->peso-$pesaje->descuento))*$var->preciocontado, 2, ",",".")}}
+        @else
+        {{number_format((($pesaje->carga-$pesaje->peso-$pesaje->descuento))*$var->preciocredito, 2, ",",".")}}
+        @endif
+        @endforeach. Ha sido cancelado al Productor: {{$productor->nombre}}.</h3></strong>  
      <div class="col-xs-5">
     <form action="{{url('recibo')}}/{{$pesaje->id}}" method="post">
      {{csrf_field()}}

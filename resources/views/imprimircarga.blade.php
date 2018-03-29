@@ -33,13 +33,18 @@
    <font size=1>Placas: <strong>{{$placa}}</strong></font><br>
    <font size=1>Conductor: <strong>{{$chofer}}</strong></font><br>
    <font size=1>C.I. Conductor <strong>{{$cedula}}</strong></font><br>
-   <font size=1>TARA: <strong>{{number_format($peso/1000,2,",",".")}} T</strong> </font><br>
-  <font size=1>Peso Bruto: <strong>{{total(($carga-$peso-$descuento)/1000,($descuento)/1000,$peso/1000, 2)}} T</strong></font><br>
-  <font size=1>Descuento: <strong>{{number_format(($descuento)/1000, 2,",",".")}} T</strong> </font><br>
-  <font size=2>Peso Neto: <strong>{{truncateFloat(($carga-$peso-$descuento)/1000, 2)}} T</strong>  </font>  <br>
-  
-  <font size=2>Precio P/T: <strong>{{number_format($precio, 2,",",".")}} BsF</strong>  </font><br>
-     <font size=2><strong>TOTAL:  {{totalPrecio(($carga-$peso-$descuento)/1000,$precio, 2)}} BsF.</strong></font><br> <br>
+   <font size=1>TARA: <strong>{{number_format($peso,2,",",".")}} T</strong> </font><br>
+  <font size=1>Peso Bruto: <strong>{{total(($carga-$peso-$descuento),($descuento),$peso, 2)}} T</strong></font><br>
+  <font size=1>Descuento: <strong>{{number_format(($descuento), 2,",",".")}} T</strong> </font><br>
+  <font size=2>Peso Neto: <strong>{{truncateFloat(($carga-$peso-$descuento), 2)}} T</strong>  </font>  <br>
+  @if($precio==0)
+  <font size=2>Precio P/T: <strong>{{number_format($preciocontado, 2,",",".")}} BsF</strong>  </font><br>
+    <font size=2><strong>TOTAL:  {{totalPrecio(($carga-$peso-$descuento),$preciocontado, 2)}} BsF.</strong></font><br> <br>
+    @else
+    <font size=2>Precio P/T: <strong>{{number_format($preciocredito, 2,",",".")}} BsF</strong>  </font><br>
+     <font size=2><strong>TOTAL:  {{totalPrecio(($carga-$peso-$descuento),$preciocredito, 2)}} BsF.</strong></font><br> <br>
+     @endif
+    
        <font size=2>Firma:_____________________________</font>
        <br> <br>
        <?php $fecha=date_create($fecha); ?>

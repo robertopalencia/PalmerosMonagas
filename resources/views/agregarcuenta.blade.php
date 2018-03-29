@@ -14,21 +14,29 @@
 @endif
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="cedula" class="control-label">Cedula de Identidad del Productor</label>
-    <input type="text" name="cedula" class="form-control">
+    <label for="cedula" class="control-label">Cedula de Identidad</label>
+    <div class="input-group">
+    <select name="nacionalidad" class="form-control" required>
+     <option value=""></option>
+     <option value="E">E</option>
+     <option value="V">V</option>
+    </select>
+    <span class="input-group-addon">-</span> 
+    <input type="number" name="cedula" class="form-control" value="{{old('cedula')}}" required>
+    </div>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="banco" class="control-label">Banco</label>
-    <input type="text" name="banco" class="form-control">
+    <input type="text" name="banco" class="form-control" value="{{old('banco')}}" required >
 </div>
 </div>
 
 <div class="col-xs-5">
 <div class="form-group">
     <label for="cuenta" class="control-label">Número de Cuenta</label>
-    <input type="text" name="cuenta" class="form-control">
+    <input type="number" name="cuenta" class="form-control" value="{{old('cuenta')}}" required>
 </div>
 </div>
 

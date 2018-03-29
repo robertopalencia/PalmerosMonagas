@@ -15,7 +15,8 @@ class CreatePrecioTable extends Migration
     {
         Schema::create('precio', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('precio');
+            $table->decimal('preciocontado', 10, 2);
+            $table->decimal('preciocredito', 10, 2);
             $table->timestamps();
         });
     }

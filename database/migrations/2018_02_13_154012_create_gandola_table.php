@@ -24,7 +24,7 @@ class CreateGandolaTable extends Migration
             $table->integer('ano');
             $table->string('chofer');
             $table->string('cedula');
-            $table->integer('peso');
+            $table->decimal('peso', 10, 2);
             $table->string('telefono');
         });
     }

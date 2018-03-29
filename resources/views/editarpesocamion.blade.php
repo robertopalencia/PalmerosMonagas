@@ -20,8 +20,8 @@ Nota: En caso de que esta carga no sea de hoy, regrese una pagina con el navegad
 {{method_field ('PUT')}} 
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="real" class="control-label" >Tara (Kg) del Camion Placas {{$camion->placa}}</label>
-    <input type="text" name="real" class="form-control" value="{{$peso->peso}}">
+    <label for="real" class="control-label" >Tara del Camion Placas {{$camion->placa}}</label>
+    <input type="number" step="0.01" name="real" class="form-control" value="{{$peso->peso}}">
 </div>
 </div>
 

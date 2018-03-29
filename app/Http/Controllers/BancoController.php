@@ -72,6 +72,7 @@ class BancoController extends Controller
                 'tipo'=>'required',
                 'tipocuenta'=>'required',
                 'cedula'=>'required |min:100000|max:200000000|numeric',
+                'nacionalidad'=>'required',
             ]);   
         
         if($validator->fails())
@@ -88,7 +89,7 @@ class BancoController extends Controller
         foreach ($productor as $productores) 
         {
                    
-            if ($request->cedula==$productores->cedula)
+            if ($request->nacionalidad."".$request->cedula==$productores->cedula)
             {
                 $idproductor=$productores->id;
                 $nombre=$productores->nombre;

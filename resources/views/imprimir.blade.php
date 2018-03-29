@@ -44,7 +44,13 @@
                    <?php $fecha2=date_create($pesajes->fecha); ?>
                     <td align="center"> <font size=1>{{date_format($fecha2, 'd-m-Y')}}</font> </td>
                     <td align="center"> <font size=1>{{$pesajes->id}} <strong></font></strong> </td>
-                    <td align="center"><font size=1>{{totalPrecio((($pesajes->carga-$pesajes->peso-$pesajes->descuento)/1000),$pesajes->precio, 2)}}</font></td>
+                    <td align="center"><font size=1>
+                    @if($pesajes->precio==0)
+                    {{totalPrecio(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocontado, 2)}}
+                    @else
+                     {{totalPrecio(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocredito, 2)}}
+                     @endif
+                    </font></td>
                    
                 </tr>
                 

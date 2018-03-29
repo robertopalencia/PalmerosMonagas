@@ -10,13 +10,13 @@
 <div class="col-xs-5">
 <div class="form-group">
     <label for="real" class="control-label" >Peso Monagas en Kg</label>
-    <input type="text" name="real" class="form-control" value="{{$gandola->peso_real}}">
+    <input type="number" step="0.01" name="real" class="form-control" value="{{$gandola->peso_real}}">
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="destino" class="control-label">Peso Zulia en Kg</label>
-    <input type="text" name="destino" class="form-control" value="{{$gandola->peso_mermado}}">
+    <input type="number" step="0.01" name="destino" class="form-control" value="{{$gandola->peso_mermado}}">
 </div>
 </div>
 

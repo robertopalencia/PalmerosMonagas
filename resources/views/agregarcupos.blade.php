@@ -14,21 +14,29 @@
 @endif
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="cedula" class="control-label">Cedula de Identidad del Productor</label>
-    <input type="text" name="cedula" class="form-control" required>
+    <label for="cedula" class="control-label">Cedula de Identidad</label>
+    <div class="input-group">
+    <select name="nacionalidad" class="form-control" required>
+     <option value=""></option>
+     <option value="E">E</option>
+     <option value="V">V</option>
+    </select>
+    <span class="input-group-addon">-</span> 
+    <input type="text" name="cedula" class="form-control"  value="{{old('cedula')}}" required>
+    </div>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="fecha" class="control-label">Fecha a Reservar</label>
-    <input type="date" min="{{$fecha}}" name="fecha" class="form-control" required>
+    <input type="date" min="{{$fecha}}" name="fecha" class="form-control" value="{{old('fecha')}}" required>
 </div>
 </div>
 
 <div class="col-xs-5">
 <div class="form-group">
     <label for="peso" class="control-label">Carga en KG</label>
-    <input type="text" name="peso" class="form-control" required>
+    <input type="text" name="peso" class="form-control" value="{{old('peso')}}" required>
 </div>
 </div>
 

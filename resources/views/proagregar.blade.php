@@ -15,7 +15,7 @@
 <div class="col-xs-5">
 <div class="form-group">
     <label for="nombre" class="control-label">Nombre y Apellido</label>
-    <input type="text" name="nombre" class="form-control" required>
+    <input type="text" name="nombre" class="form-control" value="{{old('nombre')}}" required>
 </div>
 </div>
 <div class="col-xs-5">
@@ -28,7 +28,7 @@
      <option value="V">V</option>
     </select>
     <span class="input-group-addon">-</span> 
-    <input type="text" name="cedula" class="form-control" required>
+    <input type="number" value="{{old('cedula')}}" name="cedula" class="form-control" required>
     </div>
 </div>
 </div>
@@ -46,14 +46,14 @@
      <option value="V">V</option>
     </select>
     <span class="input-group-addon">-</span> 
-    <input type="text" name="rif" class="form-control" required>
+    <input type="number" value="{{old('rif')}}" name="rif" class="form-control" required>
     </div>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="finca" class="control-label">Nombre de Juridico</label>
-    <input type="text" name="finca" class="form-control" required>
+    <input type="text" name="finca" value="{{old('finca')}}" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
@@ -77,31 +77,31 @@
 <div class="col-xs-5">
 <div class="form-group">
     <label for="direccion" class="control-label">Dirección</label>
-    <input type="text" name="direccion" class="form-control" required>
+    <input type="text" value="{{old('direccion')}}" name="direccion" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="telefono" class="control-label">Telefono</label>
-    <input type="text" name="telefono" class="form-control" required>
+    <input type="text" name="telefono" value="{{old('telefono')}}" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="direccion" class="control-label">Banco</label>
-    <input type="text" name="banco" class="form-control" required>
+    <input type="text" name="banco" value="{{old('banco')}}" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="cuenta" class="control-label">Cuenta Nº</label>
-    <input type="text" name="cuenta" class="form-control" required>
+    <input type="text" name="cuenta" value="{{old('cuenta')}}" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
     <label for="correo" class="control-label">Correo Electronico</label>
-    <input type="text" name="correo" class="form-control" required>
+    <input type="text" name="correo" value="{{old('correo')}}" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">

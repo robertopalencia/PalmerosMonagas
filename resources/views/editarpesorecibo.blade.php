@@ -19,8 +19,8 @@ Nota: En caso de que esta carga no sea de hoy, regrese una pagina con el navegad
 {{method_field ('PUT')}} 
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="real" class="control-label" >Descuento (Kg)</label>
-    <input type="text" name="real" class="form-control" value="{{$peso->descuento}}">
+    <label for="real" class="control-label" >Descuento (Ton)</label>
+    <input type="number" step="0.01" name="real" class="form-control" value="{{$peso->descuento}}">
 </div>
 </div>
 

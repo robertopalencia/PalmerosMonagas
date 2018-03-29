@@ -59,6 +59,7 @@ class CuposController extends Controller
                 'peso'=>'required |min:20|max:200000|numeric',
                 'fecha'=>'required |date',
                 'cedula'=>'required |min:100000|max:200000000|numeric',
+                'nacionalidad'=>'required',
             ]);
         
         if($validator->fails())
@@ -74,7 +75,7 @@ class CuposController extends Controller
                  
         foreach ($productor as $productores) 
         { 
-                if ($request->cedula==$productores->cedula)
+                if ($request->nacionalidad."".$request->cedula==$productores->cedula)
                 {
                     $idproductor=$productores->id;
                     $productornombre=$productores->nombre;
@@ -96,7 +97,7 @@ class CuposController extends Controller
         }
         else 
         {
-            return back()->with('msj2', 'La Cedula de Identidad '.$request->cedula.' NO EXISTE');
+            return back()->with('msj2', 'La Cedula de Identidad '.$request->nacionalidad."".$request->cedula.' NO EXISTE');
             return redirect ('/agregarcupos');
         }   
     }

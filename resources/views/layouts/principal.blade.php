@@ -151,23 +151,45 @@
                         <li>
                             <a href="#"><i class="fa fa-usd fa-fw"></i> Precio<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                              <?php $precio = Precio::all();
+                                         if(count($precio)>0) { ?>
+                               <li> <div align="center">
+                                     <strong>PRECIO DE CONTADO</strong>
+                                     </div>
+                                </li>
                                 <li>
-                                     <div align='center'><strong><?php $precio = Precio::all();
+                                     <div align='center'><?php 
                                          $precios2=0;
                                          $preciosid=0;
                                          foreach ($precio as $precios){
                                              
                                              if($precios->id>=$preciosid) {
-                                                 $precios2=$precios->precio;
+                                                 $preciocontado=$precios->preciocontado;
+                                                 $preciocredito=$precios->preciocredito;
                                                  $preciosid=$precios->id;
                                              }
                                          } ;
-                                         echo number_format($precios2, 2, ",",".")." BsF";
-                                         ?></strong></div>
+                                         echo number_format($preciocontado, 2, ",",".")." BsF";
+                                         ?></div>
                                 </li>
+                                 <li> <div align="center">
+                                    <strong>PRECIO DE CREDITO</strong>
+                                     </div>
+                                </li>
+                                <li> 
+                                     <div align='center'><?php 
+                                         
+                                         echo number_format($preciocredito, 2, ",",".")." BsF";
+                                         ?></div>
+                                </li>
+                                <?php } else {?>
+                                 <li> 
+                                     <div align='center'> 0,00 BsF</div>
+                                </li>
+                                <?php }?>
                                 @if(Auth::user()->hasRole('admin'))
                                 <li>
-                                    <a href="/precio"><i class='fa fa-pencil fa-fw'></i> Cambiar Precio</a>
+                                    <a href="/precio"><i class='fa fa-pencil fa-fw'></i> Cambiar Precios</a>
                                 </li>
                                 @endif
                             </ul>
