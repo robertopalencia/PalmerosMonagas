@@ -32,6 +32,7 @@
 <div class="alert alert-danger" role="alert">{{$msj}}</div></div>
 @endif
       @if (count($camion)>0)
+       <h4><strong>Camiones: {{count($camion)}}</strong></h4>
         <table class="table table-striped task-table">
             <thead>
                 <th>Chofer</th>
@@ -64,13 +65,13 @@
                     <td class="table-text"><div> {{$camiones->ano}} </div></td>
                     <td class="table-text"><div> {{$camiones->peso}} </div></td>
                     @if(Auth::user()->hasRole('admin'))
-                    <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarcamiones/{{$camiones->id}}'" style="float: left">
+                    <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarcamiones/{{$camiones->id}}'" style="float: left" title="Editar">
                         <i class="fa fa-pencil fa-2x"></i>
                     </button>
                     <form action="{{url('tablacamiones')}}/{{$camiones->id}}" method="post" style="float: left"> 
                     {{csrf_field()}} 
                     {{method_field ('DELETE')}} 
-                    <button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS {{$camiones->placa}}, SE BORRARAN TODOS SUS REGISTROS')">
+                    <button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Esta Seguro de Eliminar al vehiculo PLACAS {{$camiones->placa}}, SE BORRARAN TODOS SUS REGISTROS')" title="Borrar">
                         <i class="fa fa-trash fa-2x"></i>
                     </button>
                     </form>

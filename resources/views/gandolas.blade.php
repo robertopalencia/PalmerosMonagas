@@ -45,11 +45,11 @@
                     <td class="table-text"><div> {{$gandola->fecha}} </div></td>
                     <td class="table-text"><div> {{$gandola->ubicacion}} </div></td>
                     
-                       <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='pesos/{{$gandola->id}}'">
-                        <i class=""></i> Pesos
-                    </button></td>
-                    <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='ubicacion/{{$gandola->cid}}'">
-                        <i class=""></i> Ubicacion
+                       <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='pesos/{{$gandola->id}}'" title="Cambiar Pesos" style="float:left;">
+                        <i class="fa fa-chevron-down fa-2x"></i>
+                    </button>
+                    <button type="submit" class="btn btn-success btn-xs" onclick="location.href='ubicacion/{{$gandola->cid}}'" title="Ubicacion">
+                        <i class="fa fa-map-marker fa-2x"></i>
                     </button></td>
            
                   

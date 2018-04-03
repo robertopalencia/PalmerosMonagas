@@ -73,7 +73,7 @@
                 <th>Placa</th>
                 <th>Tara</th>
                 @if(Auth::user()->hasRole('admin'))
-                <th>Carga</th>
+                <th>Neto</th>
                 @endif
                 <th>Descuento</th>
                 @if(Auth::user()->hasRole('admin'))
@@ -100,9 +100,9 @@
                    <td class="table-text"><div> {{number_format($control->descuento, 2, ",",".")}}Ton </div></td>
                     @if(Auth::user()->hasRole('admin'))
                     @if($control->precio==0) 
-                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)), $control->preciocontado, 2)}} BsF
+                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)), $control->preciocontado, 2)}} BsF D
                     @else 
-                    <td class="table-text"><div> {{totalPrecio((($control->carga-$control->peso-$control->descuento)), $control->preciocredito, 2)}} BsF
+                    <td class="table-text"><div>{{totalPrecio((($control->carga-$control->peso-$control->descuento)), $control->preciocredito, 2)}} BsF C
                     @endif
                     </div>
                     </td>
@@ -171,6 +171,7 @@
                      @endif
             </tbody>
         </table>
+        
         <strong>Nota:</strong> La impresión, son nota de entrega. <br><strong>Al agregar descuento, recargar con F5.</strong>
         @endif
        

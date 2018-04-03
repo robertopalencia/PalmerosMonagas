@@ -67,9 +67,9 @@
                     <td class="table-text"><div> {{$pesajes->descripcion}} </div></td>
                     <td class="table-text"><div> 
                     @if($pesajes->precio==0)
-                    {{totalPrecio(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocontado, 2)}} 
+                    {{totalPrecio(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocontado, 2)}} D
                     @else
-                     {{totalPrecio(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocredito, 2)}}
+                     {{totalPrecio(($pesajes->carga-$pesajes->peso-$pesajes->descuento),$pesajes->preciocredito, 2)}} C
                      @endif
                     </div></td>
                    

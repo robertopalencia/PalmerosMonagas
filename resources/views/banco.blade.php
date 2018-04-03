@@ -74,13 +74,13 @@
                     <td class="table-text"><div> {{$bancos->tipocuenta}} </div></td>
                     @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                 
-                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarcuenta/{{$bancos->id}}'" style="Float: left">
+                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarcuenta/{{$bancos->id}}'" style="Float: left" title="Editar">
                         <i class="fa fa-pencil fa-2x"></i>
                     </button>
                     <form action="{{url('banco')}}/{{$bancos->id}}" method="post" style="Float: left"> 
                     {{csrf_field()}} 
                     {{method_field ('DELETE')}} 
-                    <button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Esta Seguro de Eliminar la cuenta {{$bancos->tipocuenta}} de {{$bancos->banco}} de {{$productores->nombre}}')">
+                    <button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Esta Seguro de Eliminar la cuenta {{$bancos->tipocuenta}} de {{$bancos->banco}} de {{$productores->nombre}}')" title="Borrar">
                         <i class="fa fa-trash fa-2x"></i>
                     </button>
                     </form> 

@@ -85,7 +85,8 @@ Route::post('/agregarcupos', 'CuposController@agregarcupos');
 Route::get('/cupos', 'CuposController@tablacupos');
 
 //***********************PESAJE**********************************
-Route::get('pagregar','PesajeController@vistaagregar');
+Route::get('vistaverificacion','PesajeController@vistaverificacion');
+Route::post('verificacion', 'PesajeController@verificacion');
 Route::post('pdf','PesajeController@pdfrecibo');
 Route::post('agregarcarga', 'PesajeController@agregarcarga');
 Route::post('pdfcarga','PesajeController@pdfcarga');

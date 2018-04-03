@@ -48,86 +48,48 @@
         {{session('msj3')}}
     </div>
 @endif
-   {{ Form::open(array('url' => 'agregarcarga')) }}
+   {{ Form::open(array('url' => 'verificacion')) }}
    {{csrf_field()}}
-     
-       
-            
-                <strong>Nombre:</strong> {{$productornombre}} <strong> RIF:</strong> {{$productorrif}} <strong>COD:</strong> {{$codproductor}}
-            
-        <br>
-        <input type="hidden" name="rif" class="form-control" value="{{$productorrif}}" required>
-        <input type="hidden" name="cod" class="form-control" value="{{$codproductor}}" required>
-        <input type="hidden" name="nombre" class="form-control" value="{{$productornombre}}" required>
-        <input type="hidden" name="id" class="form-control" value="{{$idproductor}}" required>
-         <div class="col-xs-5">
+      <div class="col-xs-5">
             <div class="form-group">
-                <label for="placa" class="control-label">Placa Camion</label>
-                <input type="text" name="placa" class="form-control" value="{{old('placa')}}" required>
-            </div>
-        </div>
-        <div class="col-xs-5">
-            <div class="form-group">
-                <label for="carga" class="control-label">Peso Bruto</label>
-                <input type="number" step="0.01" name="carga" class="form-control" value="{{old('carga')}}" required >
-            </div>
-        </div>
-        <div class="col-xs-5">
-            <div class="form-group">
-                <label for="tara" class="control-label">Tara</label>
-                <input type="number" step="0.01" name="tara" class="form-control" value="{{old('tara')}}" required >
-            </div>
-        </div>
-        <div class="col-xs-5">
-            <div class="form-group">
-                <label for="descuento" class="control-label">Descuento</label>
-                <input type="number" step="0.01" name="descuento" class="form-control" value="{{old('descuento')}}" required>
-            </div>
-        </div>
-        
-        <div class="col-xs-5">
-            <div class="form-group">
-                <label for="precio" class="control-label">Tipo de Precio</label>
-                
-                    <select name="precio" class="form-control" required>
-                     <option value=""></option>
-                     <option value="contado">Contado</option>
-                     <option value="credito">Credito</option>
+                <label for="rif" class="control-label">RIF o COD del Productor</label>
+                <div class="input-group">
+                    <select name="letra" class="form-control" required>
+                     <option value="">RIF</option>
+                     <option value="C">C</option>
+                     <option value="E">E</option>
+                     <option value="G">G</option>
+                     <option value="J">J</option>
+                     <option value="P">P</option>
+                     <option value="V">V</option>
+                     <option value="">COD</option>
+                     <option value="PH">PH</option>
+                     <option value="PVL">PVL</option>
+                     <option value="PZ">PZ</option>
+                     <option value="PC">PC</option>
+                     <option value="PA">PA</option>
+                     <option value="PV">PV</option>
+                     <option value="PCR">PCR</option>
+                     <option value="PPJ">PPJ</option>
+                     <option value="PSA">PSA</option>
+                     <option value="PEB">PEB</option>
                     </select>
+                    <span class="input-group-addon">-</span> 
+                <input type="number" name="rif" class="form-control" value="{{old('rif')}}" required>
+                </div>
             </div>
         </div>
-    <div class="col-xs-5">
-            <div class="form-group">
-                <label for="descripcion" class="control-label">Descripción</label>
-                <input type="text" name="descripcion" class="form-control" value="{{old('descripcion')}}" required>
-            </div>
-        </div>
-     @if($idgandola==0)
-        <div class="col-xs-5">
-            <div class="form-group">
-                <label for="gandola" class="control-label">Placa Gandola</label>
-                <input type="text" name="gandola" class="form-control" value="{{old('gandola')}}" required>
-            </div>
-        </div>
-        @else
-        @if(session()->has('placagandola'))
-        <input type="hidden" name="gandola" class="form-control" value="{{session('placagandola')}}">
-        @else
-         <input type="hidden" name="gandola" class="form-control" value="{{$placagandola}}">
-         @endif
-        @endif
-         
-        <div class="col-xs-5">
+          <div class="col-xs-5">
             <div class="form-group">
                 <br>
                  <button type="submit" class='btn btn-info'>
-                     <i class="fa fa-plus"></i> Cargar Pesaje
+                     <i class="fa fa-plus"></i> Verificar
                  </button>
             </div>
         </div>
     {{ Form::close() }}
        @if($idgandola>0)
-         <div class="col-xs-5" style="Float: left">
+         <div class="col-xs-5">
             <div class="form-group">
                        @if(session()->has('idcarga'))
              

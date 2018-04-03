@@ -74,7 +74,7 @@
                             <ul class="nav nav-second-level">
                                @if(Auth::user()->hasRole('admin')||Auth::user()->hasRole('user'))
                                 <li>
-                                    <a href="/pagregar"><i class='fa fa-keyboard-o fa-fw'></i> Cargar</a>
+                                    <a href="/vistaverificacion"><i class='fa fa-keyboard-o fa-fw'></i> Cargar</a>
                                 </li>
                                 @endif
                                 <li>

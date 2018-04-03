@@ -38,7 +38,12 @@ class ProductorController extends Controller
             
             OR finca LIKE '%".$request->nombre."%'
              
-            OR direccion LIKE '%".$request->nombre."%'";  
+            OR direccion LIKE '%".$request->nombre."%'
+             
+            OR cod LIKE '%".$request->nombre."%'
+            
+            OR telefono LIKE '%".$request->nombre."%'
+            ";  
                 
             $productor=DB::select($sql);
              if(count($productor)==0) {   
@@ -54,7 +59,7 @@ class ProductorController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'nombre'=>'required |min:8|max:70',
-                'cedula'=>'required |min:100000|max:200000000|numeric|unique:gandola',
+                'letra'.'cedula'=>'required |min:100000|max:200000000|numeric',
                 'nacionalidad'=>'required',
                 'rif'=>'required |min:7|max:15',
                 'letra'=>'required',
@@ -62,8 +67,8 @@ class ProductorController extends Controller
                 'direccion'=>'required |max:70',
                 'cuenta'=>'required |digits:20|numeric|unique:banco',
                 'banco'=>'required |max:50',
-                'correo'=>'required |max:70 |email|unique:productor',
-                'telefono'=>'required |max:14|unique:productor',
+                'correo'=>'max:70|required|email',
+                'telefono'=>'max:14|required',
                 'localidad'=>'required |min:1',
                 'tipo'=>'required',
                 'tipocuenta'=>'required',
@@ -293,7 +298,7 @@ class ProductorController extends Controller
     
     public function tablaproductores()
     {
-          $productor= Productor::orderBy('nombre')->get();
+          $productor= Productor::orderBy('cod')->get();
               
                 if (count($productor)==0){
                  return view('tablaproductores', ['productor'=>$productor, 'msj'=>'NO HAY PRODUCTORES REGISTRADO']);

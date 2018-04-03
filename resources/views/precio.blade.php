@@ -8,13 +8,13 @@
 <div class="col-xs-5">
 <div class="form-group">
    <label for="preciocontado" class="control-label">Precio a Contado</label>
-    <input type="number"  name="preciocontado" class="form-control" >
+    <input type="number"  name="preciocontado" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
 <div class="form-group">
    <label for="preciocredito" class="control-label">Precio a Credito</label>
-    <input type="number"  name="preciocredito" class="form-control" >
+    <input type="number"  name="preciocredito" class="form-control" required>
 </div>
 </div>
 <div class="form-group">

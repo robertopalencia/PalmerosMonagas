@@ -191,19 +191,113 @@ class PesajeController extends Controller
          return view ('pagregar', ['idgandola'=>'0']);    
         }
     }
+     public function vistaverificacion(Request $request)
+    { 
+        $request->user()->authorizeRoles(['admin','user']);
+        $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
+        $cargagandola=DB::select($sqlcargagandola);
+        $idgandola=0;
+        foreach($cargagandola as $cargas)
+        {
+            $idcarga=$cargas->id;
+            $idgandola=$cargas->id_gandola;
+            $pesoneto=$cargas->peso_neto;
+        }
+        $sqlgandola = "SELECT * FROM gandola WHERE id='".$idgandola."'"; 
+        $gandola=DB::select($sqlgandola);
+         foreach($gandola as $gandolas)
+        {
+            $placa=$gandolas->placa;
+            $gandolapeso=$gandolas->peso;
+        }
+        if(count($cargagandola)>0)
+        {
+         return view ('verificacion', ['idgandola'=>'1', 'idcarga'=>$idcarga, 'placagandola'=>$placa, 'pesoneto'=>$pesoneto, 'gandolapeso'=>$gandolapeso]); 
+        }
+        else
+        {
+         return view ('verificacion', ['idgandola'=>'0']);    
+        }
+    }
+    
+    public function verificacion(Request $request)
+    { 
+       $request->user()->authorizeRoles(['admin','user']);
+       $validator = Validator::make($request->all(),
+            [
+                'rif'=>'required |min:3|max:14',
+                'letra'=>'required',
+            ]);
+                if($validator->fails())
+                {
+                      return redirect('/vistaverificacion')
+                     ->withInput()
+                     ->withErrors($validator);
+                }
+        $productor = Productor::all();
+        $idproductor=0;
+                 foreach ($productor as $productores) {
+                    
+                     
+                    if (($request->letra."".$request->rif)==$productores->rif||($request->letra."".$request->rif)==$productores->cod){
+                        $idproductor=$productores->id;
+                        $productornombre=$productores->finca;
+                        $productorrif=$productores->rif;
+                        $codproductor=$productores->cod;
+                    }
+                    
+                }
+        if ($idproductor>0)
+        {
+         
+        $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
+        $cargagandola=DB::select($sqlcargagandola);
+        $idgandola=0;
+        foreach($cargagandola as $cargas)
+        {
+            $idcarga=$cargas->id;
+            $idgandola=$cargas->id_gandola;
+            $pesoneto=$cargas->peso_neto;
+        }
+        $sqlgandola = "SELECT * FROM gandola WHERE id='".$idgandola."'"; 
+        $gandola=DB::select($sqlgandola);
+         foreach($gandola as $gandolas)
+        {
+            $placa=$gandolas->placa;
+            $gandolapeso=$gandolas->peso;
+        }
+        if(count($cargagandola)>0)
+        {
+         return view ('pagregar', ['idgandola'=>'1', 'idcarga'=>$idcarga, 'placagandola'=>$placa, 'pesoneto'=>$pesoneto, 'gandolapeso'=>$gandolapeso,'idproductor'=>$idproductor,'productornombre'=>$productornombre,'productorrif'=>$productorrif,'codproductor'=>$codproductor]); 
+         
+        }
+        else
+        {
+         return view ('pagregar', ['idgandola'=>'0','idproductor'=>$idproductor,'productornombre'=>$productornombre,'productorrif'=>$productorrif,'codproductor'=>$codproductor]);    
+        }   
+        }
+        else 
+        {
+            return back()->with('msj2', 'El RIF O CODIGO INTRODUCIDO NO EXISTE EN LOS REGISTROS');
+        }
+    }
+    
     
     public function agregarcarga (Request $request)
     {
         $validator = Validator::make($request->all(),
             [
-                'carga'=>'required |max:2000000|numeric',
-                'tara'=>'required |max:2000000|numeric',
+                'carga'=>'required |max:2000|numeric',
+                'tara'=>'required |max:2000|numeric',
                 'descripcion'=>'required |max:70',
-                'rif'=>'required |min:6|max:14',
+                'rif'=>'required |min:3|max:15',
                 'placa'=>'required |min:6|max:9',
                 'gandola'=>'required |min:6|max:9',
-                'letra'=>'required',
+                'cod'=>'required',
+                'nombre'=>'required',
+                'id'=>'required',
                 'precio'=>'required',
+                'descuento'=>'required|max:200|numeric'
                 
             ]);
                 if($validator->fails())
@@ -214,7 +308,7 @@ class PesajeController extends Controller
                 }
                 $camion = Camion::all();
                 $gandola = Gandola::all();
-                $productor = Productor::all();
+               
                 $precio = Precio::all();
                 $precios2=0;
         if (count($precio)==0) {
@@ -238,19 +332,20 @@ class PesajeController extends Controller
                         $idcamion=$camiones->id;
                         $pesocamion=$camiones->peso;
                         $placa=$camiones->placa;
+                        $nombrechofer=$camiones->nombre;
+                        $cedulachofer=$camiones->cedula;
+                        $ano=$camiones->ano;
+                        $modelo=$camiones->modelo;
+                        $marca=$camiones->marca;
                     }
                     
                 } $idproductor=0;
-                 foreach ($productor as $productores) {
-                    
-                     
-                    if (($request->letra."".$request->rif)==$productores->rif){
-                        $idproductor=$productores->id;
-                        $productornombre=$productores->finca;
-                        $productorrif=$productores->rif;
-                    }
-                    
-                }
+                
+                        $idproductor=$request->id;
+                        $productornombre=$request->nombre;
+                        $productorrif=$request->rif;
+                        $codproductor=$request->cod;
+                        
                 $sqlcargagandola = "SELECT * FROM cargagandola WHERE finale='no'"; 
                 $cargagandola=DB::select($sqlcargagandola);
        
@@ -297,6 +392,7 @@ class PesajeController extends Controller
             $carga->carga = $request->carga;
             $carga->descripcion = $request->descripcion;
             $carga->peso=$request->tara;
+            $carga->descuento=$request->descuento;
             $carga->pago="NO";
             $carga->camion_id = $idcamion;
                    
@@ -314,7 +410,7 @@ class PesajeController extends Controller
                 if(count($cargagandola)>0)
                 {
                 $suma=0;
-                $pesaje=$request->carga-$pesocamion;
+                $pesaje=$request->carga-$request->tara-$request->descuento;
                 $suma=$pesaje+$pesoneto;
                 $gandola2=Cargagandola::findOrFail($idcarga);
                 $gandola2->peso_neto = $suma;
@@ -326,13 +422,20 @@ class PesajeController extends Controller
                 $carga->cargagandola_id = $idcarga;
              
              if($carga->save()){
+                 $idpesaje=Pesaje::all();
+                 var_dump($idpesaje->last());
+                 $notaentrega = 0;
+                 foreach ($idpesaje as $id)
+                 {
+                     $notaentrega=$id->id;
+                 }
                  if($request->precio=='contado')
                  {
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocontado)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('descuento', '0');
+                return redirect('vistaverificacion')->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('descuento',$request->descuento)->with('carga',$request->carga)->with('preciocontado',$preciocontado)->with('preciocredito',$preciocredito)->with('precio','0')->with('cod',$codproductor)->with('chofer',$nombrechofer)->with('ano',$ano)->with('marca',$marca)->with('modelo',$modelo)->with('nombre',$productornombre)->with('rif',$productorrif)->with('cedula',$cedulachofer)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('id',$notaentrega);
                  }
                  else if($request->precio=='credito')
                  {
-                  return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocredito)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('descuento', '0');   
+                  return redirect('vistaverificacion')->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('descuento',$request->descuento)->with('carga',$request->carga)->with('preciocontado',$preciocontado)->with('preciocredito',$preciocredito)->with('precio','1')->with('cod',$codproductor)->with('chofer',$nombrechofer)->with('ano',$ano)->with('marca',$marca)->with('modelo',$modelo)->with('nombre',$productornombre)->with('rif',$productorrif)->with('cedula',$cedulachofer)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('pesoneto',$suma)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('id',$notaentrega);   
                  }
             }
                 }
@@ -340,7 +443,7 @@ class PesajeController extends Controller
                 else 
                 {
                     $cargagandola=new Cargagandola;
-                    $pesaje=$request->carga-$request->tara;
+                    $pesaje=$request->carga-$request->tara-$request->descuento;
                     $cargagandola->peso_neto = $pesaje;
                     $cargagandola->id_gandola = $idgandola;
                     $cargagandola->finale = "no";
@@ -364,13 +467,20 @@ class PesajeController extends Controller
             $carga->fecha = $fecha;
             $carga->cargagandola_id = $idcarga;
              if($carga->save()){
+                 $idpesaje= Pesaje::all();
+                 var_dump($idpesaje->last());
+                 $notaentrega = 0;
+                  foreach ($idpesaje as $id)
+                 {
+                     $notaentrega=$id->id;
+                 }
                    if($request->precio=='contado')
                  {
-                return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocontado)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
+                return redirect('vistaverificacion')->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('descuento',$request->descuento)->with('carga',$request->carga)->with('preciocontado',$preciocontado)->with('preciocredito',$preciocredito)->with('precio','0')->with('cod',$codproductor)->with('chofer',$nombrechofer)->with('ano',$ano)->with('marca',$marca)->with('modelo',$modelo)->with('cedula',$cedulachofer)->with('nombre',$productornombre)->with('rif',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje)->with('id',$notaentrega);
                    }
                  else if($request->precio=='credito')
                  {
-                      return back()->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('carga',$request->carga)->with('precio',$preciocredito)->with('nombre',$productornombre)->with('cedula',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje);
+                      return redirect('vistaverificacion')->with('msj', 'Carga del Productor: '.$productornombre.' Guardada con Exito')->with('peso',$request->tara)->with('descuento',$request->descuento)->with('carga',$request->carga)->with('preciocontado',$preciocontado)->with('preciocredito',$preciocredito)->with('precio','1')->with('cod',$codproductor)->with('chofer',$nombrechofer)->with('ano',$ano)->with('marca',$marca)->with('modelo',$modelo)->with('cedula',$cedulachofer)->with('nombre',$productornombre)->with('rif',$productorrif)->with('placa',$placa)->with('idgandola','1')->with('idcarga',$idcarga)->with('placagandola',$placagandola)->with('gandolapeso', $gandolapeso)->with('pesoneto',$pesaje)->with('id',$notaentrega);
                  }
             }
                 }

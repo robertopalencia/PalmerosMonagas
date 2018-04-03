@@ -86,8 +86,8 @@
 
 <div class="col-xs-5">
 <div class="form-group">
-    <label for="peso" class="control-label">Capacidad de Carga</label>
-    <input type="text" name="peso" class="form-control"  value="{{old('peso')}}" required>
+    <label for="peso" class="control-label">Capacidad de Carga en Tonelada</label>
+    <input type="number" name="peso" class="form-control"  value="{{old('peso')}}" required step="0.01">
 </div>
 </div>
 

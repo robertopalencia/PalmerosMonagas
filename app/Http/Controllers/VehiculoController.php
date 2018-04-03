@@ -61,7 +61,7 @@ class VehiculoController extends Controller
                 'modelo'=>'required |max:20',
                 'color'=>'required |max:20',
                 'ano'=>'required |min:2|max:4',
-                'telefono'=>'required |max:14|unique:camion',
+                'telefono'=>'max:14|required',
                 
             ]);
         

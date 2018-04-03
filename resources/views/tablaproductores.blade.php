@@ -33,7 +33,9 @@
         <div class="col-xs-11">
 <div class="alert alert-danger" role="alert">{{$msj}}</div></div>
 @endif
+   
    @if (count($productor)>0)
+       <h4><strong>Productores: {{count($productor)}}</strong></h4>
         <table class="table table-striped task-table">
             <thead>
                <th>Cod</th>
@@ -60,13 +62,13 @@
                       <td class="table-text"><div> {{$productores->telefono}} </div></td>
                       @endif
                       @if(Auth::user()->hasRole('admin'))
-                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarproductores/{{$productores->id}}'" style="Float: left">
+                      <td><button type="submit" class="btn btn-warning btn-xs" onclick="location.href='editarproductores/{{$productores->id}}'" style="Float: left" title="Editar">
                         <i class="fa fa-pencil fa-2x"></i>
                     </button>
                     <form action="{{url('tablaproductores')}}/{{$productores->id}}" method="post" style="Float: left"> 
                     {{csrf_field()}} 
                     {{method_field ('DELETE')}} 
-                    <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Esta Seguro de Eliminar a {{$productores->nombre}}, SE BORRARAN TODOS SUS REGISTROS, CUENTAS BANCARIAS, PESAJES, RECIBOS ENTRE OTRAS COSAS')">
+                    <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Esta Seguro de Eliminar a {{$productores->nombre}}, SE BORRARAN TODOS SUS REGISTROS, CUENTAS BANCARIAS, PESAJES, RECIBOS ENTRE OTRAS COSAS')" title="Borrar">
                         <i class="fa fa-trash fa-2x"></i>
                     </button>
                     </form>
@@ -74,7 +76,7 @@
                     <form action="{{url('buscarreciboproductor')}}" method="post" style="Float: left"> 
                     {{csrf_field()}}  
                     <input type="hidden" name="nombre" class="form-control"  value="{{$productores->cedula}}">
-                    <button type="submit" class="btn btn-success btn-xs">
+                    <button type="submit" class="btn btn-success btn-xs" title="Recibos">
                         <i class="fa fa-eye fa-2x"></i>
                     </button>
                     </form>

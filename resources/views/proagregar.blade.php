@@ -101,7 +101,7 @@
 <div class="col-xs-5">
 <div class="form-group">
     <label for="correo" class="control-label">Correo Electronico</label>
-    <input type="text" name="correo" value="{{old('correo')}}" class="form-control" required>
+    <input type="email" name="correo" value="{{old('correo')}}" class="form-control" required>
 </div>
 </div>
 <div class="col-xs-5">
